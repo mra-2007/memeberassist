@@ -1,0 +1,32 @@
+# Development stack. Phase 0 provides the database only; the backend, frontend
+# and Caddy reverse proxy are added in Phase 8 (deployment).
+#
+#   docker compose up -d db
+#
+# Postgres is published on localhost only. In Phase 8 the published port is
+# dropped so the database is reachable solely inside the compose network.
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: memberassist-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: memberassist
+      POSTGRES_USER: memberassist
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      # Deterministic collation so ORDER BY results match across machines.
+      POSTGRES_INITDB_ARGS: '--encoding=UTF8 --locale=C'
+    ports:
+      - '127.0.0.1:5432:5432'
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U memberassist -d memberassist']
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+
+volumes:
+  db_data:

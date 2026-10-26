@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="MemberAssist">
+  <title>MemberAssist</title>
+  <rect width="32" height="32" rx="7" fill="#12866f" />
+  <path
+    d="M16 5.5 25 8.6v7.1c0 5.3-3.6 9.2-9 10.8-5.4-1.6-9-5.5-9-10.8V8.6L16 5.5Z"
+    fill="#d2f5ea"
+  />
+  <path
+    d="m11.7 16.2 3 3 5.6-6"
+    fill="none"
+    stroke="#12866f"
+    stroke-width="2.4"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+</svg>

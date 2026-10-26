@@ -1,0 +1,56 @@
+[project]
+name = "memberassist"
+version = "0.1.0"
+description = "MemberAssist — workspace root; hosts manage.py and pins the shared environment."
+requires-python = ">=3.11,<3.12"
+dependencies = [
+    "memberassist-backend",
+    "typer>=0.15",
+    "rich>=13.9",
+]
+
+# Heavier stacks are opt-in so Phase 0/1 setup stays quick:
+#   uv sync --extra rag --extra security --extra ai --extra llm
+[project.optional-dependencies]
+rag = ["memberassist-backend[rag]"]
+security = ["memberassist-backend[security]"]
+ai = ["memberassist-backend[ai]"]
+llm = ["memberassist-backend[llm]"]
+voice = ["memberassist-backend[voice]"]
+ocr = ["memberassist-backend[ocr]"]
+docgen = ["memberassist-backend[docgen]"]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "pytest-asyncio>=0.24",
+    "pytest-cov>=6.0",
+    "ruff>=0.8",
+    "mypy>=1.13",
+    "types-pyyaml>=6.0",
+    "pre-commit>=4.0",
+]
+eval = [
+    "ragas>=0.2",
+    "pandas>=2.2",
+    "datasets>=3.1",
+]
+
+[tool.uv.workspace]
+members = ["backend"]
+
+[tool.uv.sources]
+memberassist-backend = { workspace = true }
+# en_core_web_lg is not published on PyPI; take it from the spaCy release wheel.
+en-core-web-lg = { url = "https://github.com/explosion/spacy-models/releases/download/en_core_web_lg-3.8.0/en_core_web_lg-3.8.0-py3-none-any.whl" }
+
+# ---------------------------------------------------------------------------
+# Applies to manage.py and anything else at the workspace root. Kept identical
+# to backend/pyproject.toml so pre-commit and `manage.py lint` never disagree.
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "N", "UP", "B", "A", "C4", "SIM", "ARG", "PTH", "RUF"]
+ignore = ["E501", "B008"]

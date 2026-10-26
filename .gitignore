@@ -1,0 +1,65 @@
+# ---- secrets ----
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# ---- python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+uv.lock.bak
+
+# ---- node / frontend ----
+node_modules/
+frontend/dist/
+frontend/.vite/
+*.tsbuildinfo
+
+# ---- data: raw downloads, indexes, caches, uploads (never committed) ----
+data/raw/
+data/index/
+data/cache/
+data/uploads/
+data/samples/*.bin
+data/kb/**/*.pdf
+!data/kb/manifest.yaml
+data/synthetic/*.csv
+!data/synthetic/.gitkeep
+
+# ---- models / weights ----
+models/
+*.onnx
+*.gguf
+*.safetensors
+*.bin
+.cache/
+hf_cache/
+
+# ---- eval outputs (keep small reports, drop bulk) ----
+eval/results/*.json
+!eval/results/.gitkeep
+
+# ---- os / editor ----
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/*
+!.vscode/settings.json.example
+
+# ---- logs ----
+*.log
+logs/
+
+# ---- local db fallback ----
+*.sqlite3
+*.db

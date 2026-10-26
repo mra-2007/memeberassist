@@ -1,0 +1,48 @@
+# Install once:  uv run pre-commit install
+# Run on demand: uv run pre-commit run --all-files
+default_install_hook_types: [pre-commit]
+fail_fast: false
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-added-large-files
+        args: ['--maxkb=1024']
+      - id: check-merge-conflict
+      - id: check-yaml
+        args: ['--allow-multiple-documents']
+      - id: check-toml
+      - id: check-json
+        exclude: ^frontend/(tsconfig.*\.json|\.prettierrc\.json)$
+      - id: end-of-file-fixer
+        exclude: ^(frontend/package-lock\.json|uv\.lock)$
+      - id: trailing-whitespace
+        exclude: ^(frontend/package-lock\.json|uv\.lock)$
+      - id: detect-private-key
+      - id: detect-aws-credentials
+        args: ['--allow-missing-credentials']
+      - id: forbid-submodules
+
+  # Secret scan: blocks API keys and tokens from ever entering a commit.
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.21.2
+    hooks:
+      - id: gitleaks
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.8.4
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+
+  - repo: local
+    hooks:
+      # Keeps security invariant 2.2.1: only the LLM router may import an SDK.
+      - id: architecture-test
+        name: architecture invariants (LLM SDK isolation)
+        entry: uv run --project backend pytest backend/tests/test_architecture.py -q
+        language: system
+        pass_filenames: false
+        files: ^backend/.*\.py$
