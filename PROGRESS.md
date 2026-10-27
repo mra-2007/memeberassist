@@ -4,16 +4,21 @@ Live state of the build. Every phase is done only when its done-check passes **w
 evidence**. Specification: `MASTER_PROMPT.md`. Working rules: `CLAUDE.md`.
 
 - **Current phase:** Phase 2 — Knowledge base and RAG index
-- **Last updated:** 2026-10-27
+- **Last updated:** 2026-10-28
 - **Tags:** `v1-core` not yet reached (Phase 8) · `v2-final` not yet reached (Phase 18)
 
 ---
+
+## Resolved blockers
+
+| # | Item | Resolved | Evidence |
+| --- | --- | --- | --- |
+| B1 | PostgreSQL 16 in Docker | 2026-10-28 | Docker Desktop 29.9.2 / Compose v5.6.1 installed. `docker-compose.yml` **executed for the first time**; container healthy; `DATABASE_URL` switched from the SQLite fallback to PostgreSQL; migrations, the full seed and all 89 tests re-run against it. See "Phase 1 — re-verified on PostgreSQL" below. |
 
 ## Blocked
 
 | # | Item | Why | Honest alternative in use | Needed to unblock |
 | --- | --- | --- | --- | --- |
-| B1 | PostgreSQL 16 in Docker | Docker is not installed on this machine (`docker` not on PATH; `manage.py env-report` confirms). Docker Desktop needs administrator rights to install. | None yet. Phase 1 will run on a **SQLite** development database and `DATABASE_URL` will be switched back to PostgreSQL as soon as Docker is available. `docker-compose.yml` is written and ready but **has not been executed**, so it is unverified. | Install Docker Desktop for Windows, then `uv run python manage.py db-up` |
 | B2 | LLM provider keys | Still empty in `.env` as of the Phase 1 commit. The team reported adding Gemini and Groq keys, but the file on disk was unchanged (all four key values zero-length), so the edit was probably unsaved. No LLM call can be made or verified. | None — Phase 3 cannot start without at least one key. Phases 1 and 2 need none. | Save `.env` with `GEMINI_API_KEY` and `GROQ_API_KEY` |
 | B3 | CMS Marketplace API key | `CMS_MARKETPLACE_API_KEY` is empty; requested, not yet issued. Calling the API without it returns `401 {"message":"No API key found in request"}`. | **Resolved for Phase 1** by the CMS Exchange Public Use Files, which need no key and carry the same filings. Still needed for Phase 15 drug coverage. | Wait for <https://developer.cms.gov/marketplace-api> |
 | B4 | Ollama privacy mode (optional, AI stack #6) | Machine has **13.7 GB** total RAM with only ~1.7 GB free at measurement time. A 7–8 B tool-calling model needs roughly 6 GB resident on top of the five local models MemberAssist already loads. The master prompt requires 16 GB for Ollama. | Privacy mode is **deferred and will be reported as not available on this machine** rather than half-implemented. Cloud fallback order (Gemini → Groq → OpenRouter) covers reliability. | A machine with ≥ 16 GB RAM, or accept that privacy mode stays out of scope |
@@ -47,8 +52,8 @@ Retrieval and answer metrics arrive in Phase 2–3. Phase 1 produced the dataset
 | ICD-10-CM codes verified against NLM Clinical Tables | **66 / 66** (4 wrong codes caught and fixed) |
 | Procedure codes with a real CMS price | **34 / 34** (29 from the Physician Fee Schedule, 5 from the Clinical Laboratory Fee Schedule) |
 | Plain-language synonyms resolving to a real code | **80 / 80** |
-| Fast test suite | **89 passed** in 2.4 s |
-| Full pipeline rebuild from an empty database | **68 s** |
+| Fast test suite | **89 passed** — 2.4 s on SQLite, 132 s on PostgreSQL |
+| Full pipeline rebuild from an empty database | **68 s** (SQLite) · **~13 min** on PostgreSQL with expired HTTP caches |
 
 Targets for the phases ahead:
 
@@ -75,7 +80,7 @@ Targets for the phases ahead:
       + lucide-react
 - [x] `CLAUDE.md`, `PROGRESS.md`, `README.md`
 - [x] `.env.example` with every key; `.env` created with a generated `JWT_SECRET`
-- [x] `docker-compose.yml` with PostgreSQL 16 (written, **not executed** — see B1)
+- [x] `docker-compose.yml` with PostgreSQL 16 (executed and verified on 2026-10-28)
 - [x] `manage.py` (Typer) with real commands
 - [x] FastAPI `/api/health`, `/api/health/config`, `/api/health/models`
 - [x] First tests: architecture invariant, health API, config parsing
@@ -94,7 +99,7 @@ Targets for the phases ahead:
 | Python | 3.11.9 selected for the venv (3.13 and 3.14 also present) ✅ |
 | Node | v24.14.1 ✅ (need ≥ 20) |
 | npm | 11.11.0 ✅ |
-| Docker | **not installed** → blocker B1 |
+| Docker | **29.9.2** (Compose v5.6.1) — installed 2026-10-28, blocker B1 cleared ✅ |
 | Ollama | not installed → optional, blocker B4 |
 | Java | not installed → blocker B5 |
 
@@ -210,7 +215,7 @@ accumulator and status-rule tests pass; every source recorded with URL, licence 
 ### Row counts
 
 ```
-$ uv run python manage.py db-stats
+$ uv run python manage.py db-stats     # the original run, on the SQLite fallback
 Database: SQLite (temporary fallback — blocker B1)
 
 accumulators 200    claims 715     data_sources 6    members 200
@@ -327,6 +332,73 @@ Done in 68 s
 
 Deterministic from `RANDOM_SEED = 20261027`: the same database on every machine. Raw downloads
 are cached under `data/raw/` (git-ignored), so re-runs do not re-fetch from CMS.
+
+### Phase 1 — re-verified on PostgreSQL (2026-10-28)
+
+Docker Desktop became available, so blocker B1 is cleared. `docker-compose.yml` ran for the first
+time and the whole of Phase 1 was replayed against PostgreSQL 16 rather than the SQLite fallback.
+Nothing in the schema or the scripts needed changing: only portable column types were used, which
+is what made the switch a configuration change.
+
+```
+$ docker compose ps
+NAME              IMAGE                SERVICE   STATUS                   PORTS
+memberassist-db   postgres:16-alpine   db        Up (healthy)             127.0.0.1:5432->5432/tcp
+
+$ docker inspect --format='{{.State.Health.Status}}' memberassist-db
+healthy
+
+$ docker exec memberassist-db psql -U memberassist -d memberassist -tAc "select version();"
+PostgreSQL 16.15 on x86_64-pc-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit
+```
+
+`DATABASE_URL` in `.env` now points at PostgreSQL; the commented-out SQLite line is gone, so there
+is no silent fallback left to trip over. Migrations applied onto an empty database:
+
+```
+$ uv run python manage.py migrate
+INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
+INFO  [alembic.runtime.migration] Will assume transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> 9f2c54d436c1, initial schema
+```
+
+Full seed from empty, then the row counts and the test suite:
+
+```
+$ uv run python manage.py seed        # exit 0
+$ uv run python manage.py db-stats
+Database: PostgreSQL
+
+accumulators 200    claims 718     data_sources 6    members 200
+pa_requests  14     plan_benefits 536   plans 4      procedure_prices 43
+provider_member_links 8   providers 64   refills 336   users 5
+audit_log 0   conversations 0   feedback 0   handoffs 0   messages 0   uploads 0
+
+Claims by status: 623 paid, 51 pending, 44 denied
+Denial reasons:   OUT_OF_NETWORK 22, DUPLICATE 9, PA_MISSING 8, NOT_COVERED 5
+
+$ uv run python manage.py test
+89 passed in 132.02s
+
+$ GET /api/health/config  ->  "database_backend": "postgresql"
+```
+
+The demo scenario survived the move intact: `manage.py demo-facts` still prints hero **M10234**
+Tomás Correa on the Bronze HSA plan, the knee-MRI claim **CLM-4521** denied `PA_MISSING` for code
+73721 at $583.76, and **PA-889** pending with its two missing documents.
+
+**One honest finding: the pipeline is deterministic for a given date, not across dates.** The
+claim count moved from 715 to 718 and the individual claim IDs and billed amounts changed, because
+`make_synthetic_data` lays claims over a window that ends at *today* — the seed run was a day later
+(2026-10-28 rather than 2026-10-27), so the window slid by a day and the trailing random draws
+differ. `RANDOM_SEED` still makes a run reproducible on any machine **on the same date**, which is
+what the demo needs, and the facts the demo script names are pinned explicitly rather than drawn at
+random. It is worth knowing before anyone reads a changed row count as a defect.
+
+The cost of PostgreSQL is test time: the fast suite went from **2.4 s to 132 s**, because the
+data-integrity tests now make a TCP round trip per query instead of hitting a local file. Still
+well inside "run it before and after every change", so it is being accepted rather than worked
+around with a SQLite test database that would stop testing the real engine.
 
 ### What the tests caught, and what changed because of it
 
@@ -450,5 +522,5 @@ and each handoff trigger firing with its summary.
      text, and a plan filter test proving another plan's chunk is never returned.
 2. **Save `.env`** with `GEMINI_API_KEY` and `GROQ_API_KEY` (blocker B2) — needed before Phase 3,
    not before Phase 2.
-3. **Install Docker Desktop**, then `manage.py db-up && manage.py migrate && manage.py seed` and
-   restore the PostgreSQL `DATABASE_URL` (blocker B1). The commented-out URL is in `.env`.
+3. ~~Install Docker Desktop~~ — **done 2026-10-28.** The database is PostgreSQL 16 in Docker and
+   every Phase 1 done-check has been re-run against it.
