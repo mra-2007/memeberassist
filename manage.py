@@ -222,5 +222,86 @@ def db_wait(timeout: int = 60) -> None:
     raise typer.Exit(1)
 
 
+# ---------------------------------------------------------------------------
+# database schema
+# ---------------------------------------------------------------------------
+@app.command()
+def migrate(revision: str = "head") -> None:
+    """Apply Alembic migrations (default: upgrade to head)."""
+    _exit(_run(["uv", "run", "alembic", "upgrade", revision], cwd=BACKEND))
+
+
+@app.command()
+def db_revision(message: str) -> None:
+    """Autogenerate a new Alembic migration from the models."""
+    _exit(_run(["uv", "run", "alembic", "revision", "--autogenerate", "-m", message], cwd=BACKEND))
+
+
+@app.command()
+def db_stats() -> None:
+    """Print the row count of every table."""
+    _exit(_run(["uv", "run", "python", "-m", "scripts.db_stats"], cwd=BACKEND))
+
+
+# ---------------------------------------------------------------------------
+# data pipeline (run in this order)
+# ---------------------------------------------------------------------------
+def _script(module: str, extra: list[str] | None = None) -> None:
+    """Run one pipeline script as a module so package imports resolve."""
+    _exit(_run(["uv", "run", "python", "-m", f"scripts.{module}", *(extra or [])], cwd=BACKEND))
+
+
+@app.command()
+def fetch_plans(
+    year: int = typer.Option(None, help="Plan year (default: PLAN_YEAR from .env)."),
+    verbose: bool = typer.Option(False, "-v", "--verbose"),
+) -> None:
+    """Load real Marketplace plans and cost sharing from the CMS PUFs."""
+    extra = (["--year", str(year)] if year else []) + (["-v"] if verbose else [])
+    _script("fetch_plans", extra)
+
+
+@app.command()
+def fetch_prices(verbose: bool = typer.Option(False, "-v", "--verbose")) -> None:
+    """Load Medicare benchmark prices from the CMS Physician Fee Schedule."""
+    _script("fetch_prices", ["-v"] if verbose else [])
+
+
+@app.command()
+def fetch_providers(verbose: bool = typer.Option(False, "-v", "--verbose")) -> None:
+    """Load real providers for the chosen city from the NPI Registry."""
+    _script("fetch_providers", ["-v"] if verbose else [])
+
+
+@app.command()
+def verify_mappings(verbose: bool = typer.Option(False, "-v", "--verbose")) -> None:
+    """Verify every ICD-10 code in the mappings against NLM Clinical Tables."""
+    _script("verify_mappings", ["-v"] if verbose else [])
+
+
+@app.command()
+def make_data(verbose: bool = typer.Option(False, "-v", "--verbose")) -> None:
+    """Build the synthetic members, claims, accumulators and demo scenario."""
+    _script("make_synthetic_data", ["-v"] if verbose else [])
+
+
+@app.command()
+def demo_facts() -> None:
+    """Print the demo scenario's real numbers (plan, accumulators, claims)."""
+    _script("demo_facts")
+
+
+@app.command()
+def seed() -> None:
+    """Run the whole data pipeline in order, from empty database to demo-ready."""
+    migrate()
+    fetch_plans(year=None, verbose=False)
+    fetch_prices(verbose=False)
+    fetch_providers(verbose=False)
+    verify_mappings(verbose=False)
+    make_data(verbose=False)
+    db_stats()
+
+
 if __name__ == "__main__":
     app()

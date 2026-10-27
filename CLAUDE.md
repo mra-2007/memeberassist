@@ -134,8 +134,28 @@ Run everything from the repository root. The workspace uses a single `.venv` man
 | `uv run python manage.py db-up` / `db-wait` | Start and wait for the PostgreSQL container |
 | `uv run pre-commit run --all-files` | Hooks: ruff, gitleaks secret scan, architecture test |
 
-More commands (`check-models`, `download-models`, `seed`, `build-index`, `ask-index`, `eval`,
+**Data pipeline** — run in this order, or use `seed` to run all of it:
+
+| Command | Does |
+| --- | --- |
+| `manage.py seed` | Everything below, from an empty database to demo-ready (~70 s) |
+| `manage.py migrate` | Apply Alembic migrations |
+| `manage.py db-revision "<message>"` | Autogenerate a migration from the models |
+| `manage.py fetch-plans` | Real plans and cost sharing from the CMS Marketplace PUFs |
+| `manage.py fetch-prices` | Medicare benchmark prices from the CMS fee schedules |
+| `manage.py fetch-providers` | Real providers from the NPI Registry |
+| `manage.py verify-mappings` | Verify every ICD-10 code against NLM Clinical Tables |
+| `manage.py make-data` | Synthetic members, claims, accumulators, demo scenario, logins |
+| `manage.py db-stats` | Row counts and the recorded data sources |
+| `manage.py demo-facts` | The demo scenario's real numbers |
+
+More commands (`check-models`, `download-models`, `build-index`, `ask-index`, `eval`,
 `demo-check`) are added by the phase that makes them real.
+
+**Where the money arithmetic lives.** `app/services/cost_sharing.py` is the single place that
+works out what a member pays. Claim settlement and the cost estimator both call it, so a claim
+and an estimate for the same service can never disagree. The LLM explains its output and never
+calculates. Changes there need `tests/test_cost_sharing.py` to stay green.
 
 ---
 

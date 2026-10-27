@@ -1,0 +1,67 @@
+snomed_code,snomed_display,icd10_code,category,claimable,mapping_note,verified_title,verified_on
+44054006,Diabetes mellitus type 2 (disorder),E11.9,endocrine,true,,Type 2 diabetes mellitus without complications,2026-10-27
+714628002,Prediabetes (finding),R73.03,endocrine,true,,Prediabetes,2026-10-27
+237602007,Metabolic syndrome X (disorder),E88.810,endocrine,true,,Metabolic syndrome,2026-10-27
+162864005,Body mass index 30+ - obesity (finding),E66.9,endocrine,true,SNOMED carries the BMI band; ICD-10 obesity code used without the Z68 BMI code,"Obesity, unspecified",2026-10-27
+127013003,Disorder of kidney due to diabetes mellitus (disorder),E11.22,endocrine,true,,Type 2 diabetes mellitus with diabetic chronic kidney disease,2026-10-27
+90781000119102,Microalbuminuria due to type 2 diabetes mellitus (disorder),E11.29,endocrine,true,,Type 2 diabetes mellitus with other diabetic kidney complication,2026-10-27
+157141000119108,Proteinuria due to type 2 diabetes mellitus (disorder),E11.29,endocrine,true,,Type 2 diabetes mellitus with other diabetic kidney complication,2026-10-27
+368581000119106,Neuropathy due to type 2 diabetes mellitus (disorder),E11.40,endocrine,true,,"Type 2 diabetes mellitus with diabetic neuropathy, unspecified",2026-10-27
+1551000119108,Nonproliferative diabetic retinopathy due to type II diabetes mellitus,E11.319,eye,true,,Type 2 diabetes mellitus with unspecified diabetic retinopathy without macular edema,2026-10-27
+59621000,Essential hypertension (disorder),I10,circulatory,true,,Essential (primary) hypertension,2026-10-27
+414545008,Ischemic heart disease (disorder),I25.9,circulatory,true,,"Chronic ischemic heart disease, unspecified",2026-10-27
+274531002,Abnormal findings diagnostic imaging heart+coronary circulat (finding),R93.1,circulatory,true,,Abnormal findings on diagnostic imaging of heart and coronary circulation,2026-10-27
+195967001,Asthma (disorder),J45.909,respiratory,true,,"Unspecified asthma, uncomplicated",2026-10-27
+233678006,Childhood asthma (disorder),J45.909,respiratory,true,,"Unspecified asthma, uncomplicated",2026-10-27
+10509002,Acute bronchitis (disorder),J20.9,respiratory,true,,"Acute bronchitis, unspecified",2026-10-27
+444814009,Viral sinusitis (disorder),J01.90,respiratory,true,,"Acute sinusitis, unspecified",2026-10-27
+40055000,Chronic sinusitis (disorder),J32.9,respiratory,true,,"Chronic sinusitis, unspecified",2026-10-27
+195662009,Acute viral pharyngitis (disorder),J02.9,respiratory,true,,"Acute pharyngitis, unspecified",2026-10-27
+43878008,Streptococcal sore throat (disorder),J02.0,respiratory,true,,Streptococcal pharyngitis,2026-10-27
+840539006,Disease caused by severe acute respiratory syndrome coronavirus 2 (disorder),U07.1,respiratory,true,,COVID-19,2026-10-27
+840544004,Suspected disease caused by Severe acute respiratory coronavirus 2 (situation),Z20.822,respiratory,true,,Contact with and (suspected) exposure to COVID-19,2026-10-27
+239873007,Osteoarthritis of knee (disorder),M17.11,musculoskeletal,true,SNOMED does not state laterality; right knee assigned for the synthetic claims so the demo scenario has a specific code,"Unilateral primary osteoarthritis, right knee",2026-10-27
+239872002,Osteoarthritis of hip (disorder),M16.11,musculoskeletal,true,Laterality not in SNOMED; right hip assigned,"Unilateral primary osteoarthritis, right hip",2026-10-27
+95417003,Primary fibromyalgia syndrome (disorder),M79.7,musculoskeletal,true,,Fibromyalgia,2026-10-27
+278860009,Chronic low back pain (finding),M54.50,musculoskeletal,true,,"Low back pain, unspecified",2026-10-27
+1121000119107,Chronic neck pain (finding),M54.2,musculoskeletal,true,,Cervicalgia,2026-10-27
+82423001,Chronic pain (finding),G89.29,nervous,true,,Other chronic pain,2026-10-27
+124171000119105,Chronic intractable migraine without aura (disorder),G43.711,nervous,true,,"Chronic migraine without aura, intractable, with status migrainosus",2026-10-27
+427419006,Transformed migraine (disorder),G43.709,nervous,true,,"Chronic migraine without aura, not intractable, without status migrainosus",2026-10-27
+110030002,Concussion injury of brain (disorder),S06.0X0A,injury,true,,"Concussion without loss of consciousness, initial encounter",2026-10-27
+125601008,Injury of knee (disorder),S89.91XA,injury,true,Unspecified injury of right lower leg; SNOMED gives no side,"Unspecified injury of right lower leg, initial encounter",2026-10-27
+444448004,Injury of medial collateral ligament of knee (disorder),S83.411A,injury,true,Right knee assigned; SNOMED gives no side,"Sprain of medial collateral ligament of right knee, initial encounter",2026-10-27
+44465007,Sprain of ankle (disorder),S93.401A,injury,true,Right ankle assigned; SNOMED gives no side,"Sprain of unspecified ligament of right ankle, initial encounter",2026-10-27
+125605004,Fracture of bone (disorder),T14.8XXA,injury,true,Site unspecified in SNOMED,"Other injury of unspecified body region, initial encounter",2026-10-27
+312608009,Laceration - injury (disorder),T14.8XXA,injury,true,Site unspecified in SNOMED,"Other injury of unspecified body region, initial encounter",2026-10-27
+431855005,Chronic kidney disease stage 1 (disorder),N18.1,genitourinary,true,,"Chronic kidney disease, stage 1",2026-10-27
+431856006,Chronic kidney disease stage 2 (disorder),N18.2,genitourinary,true,,"Chronic kidney disease, stage 2 (mild)",2026-10-27
+433144002,Chronic kidney disease stage 3 (disorder),N18.30,genitourinary,true,,"Chronic kidney disease, stage 3 unspecified",2026-10-27
+431857002,Chronic kidney disease stage 4 (disorder),N18.4,genitourinary,true,,"Chronic kidney disease, stage 4 (severe)",2026-10-27
+307426000,Acute infective cystitis (disorder),N30.00,genitourinary,true,,Acute cystitis without hematuria,2026-10-27
+271737000,Anemia (disorder),D64.9,blood,true,,"Anemia, unspecified",2026-10-27
+254837009,Malignant neoplasm of breast (disorder),C50.919,neoplasm,true,Unspecified site of unspecified female breast,Malignant neoplasm of unspecified site of unspecified female breast,2026-10-27
+126906006,Neoplasm of prostate (disorder),C61,neoplasm,true,"Synthea uses this code inside its prostate-cancer module, so the malignant code is the faithful mapping",Malignant neoplasm of prostate,2026-10-27
+94503003,Metastatic malignant neoplasm to prostate (disorder),C79.82,neoplasm,true,,Secondary malignant neoplasm of genital organs,2026-10-27
+80583007,Severe anxiety (panic) (finding),F41.0,mental,true,,Panic disorder [episodic paroxysmal anxiety],2026-10-27
+1149222004,Overdose (disorder),T50.901A,mental,true,,"Poisoning by unspecified drugs, medicaments and biological substances, accidental (unintentional), initial encounter",2026-10-27
+361055000,Misuses drugs (finding),F19.10,mental,true,,"Other psychoactive substance abuse, uncomplicated",2026-10-27
+10939881000119105,Unhealthy alcohol drinking behavior (finding),F10.10,mental,true,,"Alcohol abuse, uncomplicated",2026-10-27
+65363002,Otitis media (disorder),H66.90,ear,true,,"Otitis media, unspecified, unspecified ear",2026-10-27
+386661006,Fever (finding),R50.9,symptom,true,,"Fever, unspecified",2026-10-27
+49727002,Cough (finding),R05.9,symptom,true,,"Cough, unspecified",2026-10-27
+72892002,Normal pregnancy (finding),Z34.90,pregnancy,true,,"Encounter for supervision of normal pregnancy, unspecified, unspecified trimester",2026-10-27
+19169002,Miscarriage in first trimester (disorder),O03.9,pregnancy,true,,Complete or unspecified spontaneous abortion without complication,2026-10-27
+161744009,Past pregnancy history of miscarriage (situation),Z87.59,pregnancy,false,History code; no encounter of its own,"Personal history of other complications of pregnancy, childbirth and the puerperium",2026-10-27
+267020005,History of tubal ligation (situation),Z98.51,pregnancy,false,History code; no encounter of its own,Tubal ligation status,2026-10-27
+66383009,Gingivitis (disorder),K05.10,dental,true,,"Chronic gingivitis, plaque induced",2026-10-27
+18718003,Gingival disease (disorder),K06.9,dental,true,,"Disorder of gingiva and edentulous alveolar ridge, unspecified",2026-10-27
+109570002,Primary dental caries (disorder),K02.9,dental,true,,"Dental caries, unspecified",2026-10-27
+427898007,Infection of tooth (disorder),K04.7,dental,true,,Periapical abscess without sinus,2026-10-27
+37320007,Loss of teeth (disorder),K08.109,dental,true,,"Complete loss of teeth, unspecified cause, unspecified class",2026-10-27
+698306007,Awaiting transplantation of kidney (situation),Z76.82,genitourinary,false,Status code; no encounter of its own,Awaiting organ transplant status,2026-10-27
+314529007,Medication review due (situation),Z79.899,social,false,"Administrative situation, excluded from claims",Other long term (current) drug therapy,2026-10-27
+73595000,Stress (finding),Z73.3,social,false,"Social determinant, excluded from claims","Stress, not elsewhere classified",2026-10-27
+422650009,Social isolation (finding),Z60.4,social,false,"Social determinant, excluded from claims",Social exclusion and rejection,2026-10-27
+105531004,Housing unsatisfactory (finding),Z59.10,social,false,"Social determinant, excluded from claims","Inadequate housing, unspecified",2026-10-27
+706893006,Victim of intimate partner abuse (finding),T74.11XA,social,false,Sensitive; excluded from synthetic claims,"Adult physical abuse, confirmed, initial encounter",2026-10-27

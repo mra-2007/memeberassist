@@ -117,6 +117,23 @@ class Settings(BaseSettings):
         """True when running on the temporary SQLite fallback."""
         return self.database_url.startswith("sqlite")
 
+    @property
+    def resolved_database_url(self) -> str:
+        """``DATABASE_URL`` with a relative SQLite path anchored to the repo root.
+
+        Scripts run from the repository root and tests from ``backend/``; without
+        this they would silently create two different database files.
+        """
+        prefix = "sqlite+pysqlite:///"
+        if not self.database_url.startswith(prefix):
+            return self.database_url
+        path = self.database_url[len(prefix) :]
+        if path.startswith((":memory:", "/")) or Path(path).is_absolute():
+            return self.database_url
+        absolute = (REPO_ROOT / path.lstrip("./")).resolve()
+        absolute.parent.mkdir(parents=True, exist_ok=True)
+        return f"{prefix}{absolute.as_posix()}"
+
     def configured_providers(self) -> dict[str, bool]:
         """Which LLM providers have a key present (not whether the key works)."""
         return {

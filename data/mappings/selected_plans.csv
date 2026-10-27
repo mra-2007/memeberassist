@@ -1,0 +1,5 @@
+plan_id,issuer,name,metal_level,plan_type,deductible_ind,oop_max_ind,hsa_eligible,selection_reason,sbc_url
+47501TX0040002,WellPoint,Wellpoint Essential Bronze 4000 HSA (+ Incentives),Expanded Bronze,HMO,4000,8450,yes,"Bronze design, HSA-eligible where available",https://sbc.wellpoint.com/dpsdeeplink/deepLink/WellpointEssentialBronze4000HSAIncentives/8Y9B/English/DG166708944883.pdf
+33602TX0870174,Blue Cross and Blue Shield of Texas,Blue Advantage Plus Silver℠ 202,Silver,POS,1250,10500,no,"Silver design, the most commonly enrolled metal level",https://www.bcbstx.com/sbc/ind/sbc-sosh30bavitxp-tx-2026.pdf
+47501TX0030007,WellPoint,Wellpoint Essential Gold POS 700 ($0 Virtual PCP + $0 Select Drugs + Incentives),Gold,POS,700,7500,no,"Gold design with out-of-network coverage (PPO, else POS)",https://sbc.wellpoint.com/dpsdeeplink/deepLink/WellpointEssentialGoldPOS7000VirtualPCP0SelectDrugsIncentives/8Y81/English/DG166708944626.pdf
+33602TX0461124,Blue Cross and Blue Shield of Texas,MyBlue Health Gold℠ 403,Gold,HMO,500,8500,no,"A network-restricted design (HMO or EPO), so out-of-network answers differ",https://www.bcbstx.com/sbc/ind/sbc-ghsa01bftitxp-tx-2026.pdf
