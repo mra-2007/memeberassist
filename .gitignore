@@ -30,8 +30,13 @@ data/index/
 data/cache/
 data/uploads/
 data/samples/*.bin
+# Fetched knowledge-base documents are downloads, whatever their format: the
+# manifest records what was fetched, with a hash, so the files themselves never
+# need committing. Documents we author ourselves are kept.
+data/kb/files/
 data/kb/**/*.pdf
 !data/kb/manifest.yaml
+!data/kb/authored/
 data/synthetic/*.csv
 !data/synthetic/.gitkeep
 
