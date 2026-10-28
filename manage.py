@@ -340,6 +340,16 @@ def eval_retrieval(
 
 
 @app.command()
+def verify_plans(
+    apply: bool = typer.Option(False, "--apply", help="Correct the fields that differ."),
+    verbose: bool = typer.Option(False, "-v", "--verbose"),
+) -> None:
+    """Cross-check the stored plans against the live CMS Marketplace API."""
+    extra = (["--apply"] if apply else []) + (["-v"] if verbose else [])
+    _script("verify_plans_api", extra)
+
+
+@app.command()
 def demo_facts() -> None:
     """Print the demo scenario's real numbers (plan, accumulators, claims)."""
     _script("demo_facts")

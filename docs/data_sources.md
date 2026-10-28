@@ -395,6 +395,34 @@ base would have been silently missing the single most-asked appeal deadline.
 
 ---
 
+### Cross-check against the live CMS Marketplace API — attempted 2026-10-28, blocked
+
+The plans in section 1 come from the CMS Marketplace **Public Use Files**, which are the issuers'
+own QHP filings. They should therefore agree with the Marketplace API, and that claim is now
+checkable rather than asserted: `backend/scripts/verify_plans_api.py` compares every stored plan's
+name, issuer, metal level, plan type, individual deductible, individual out-of-pocket maximum and
+HSA flag against the live API, prints the HIOS plan ids and every difference, and with `--apply`
+corrects only the fields that differ.
+
+**It has not been able to run.** `CMS_MARKETPLACE_API_KEY` in `.env` has a zero-length value, and
+one live call confirms what that means:
+
+```
+POST https://marketplace.api.healthcare.gov/api/v1/plans/search
+  -> HTTP 401
+     {"message":"No API key found in request",
+      "request_id":"5b29da4fed7df27c6dcf69329fd40144"}
+```
+
+So no HIOS ids or differences are recorded here yet, because none have been observed. This section
+will carry the comparison table once a key is saved. Blocker B3 in `PROGRESS.md` tracks it; keys
+expire every 60 days.
+
+The Public Use File path stays the fallback regardless, so the stored plan terms are real CMS
+filings whether or not the API is ever reachable.
+
+---
+
 ## Sources for later phases
 
 Recorded here now so the plan is visible; not yet called.
