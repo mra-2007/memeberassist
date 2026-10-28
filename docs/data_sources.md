@@ -274,15 +274,134 @@ recorded in that row's `mapping_note`.
 
 ---
 
+### 7. Knowledge base — plan documents, federal glossary and policy, one insurer policy
+
+Fetched by `backend/scripts/fetch_kb.py`, catalogued in `backend/app/rag/kb_sources.py`, and
+recorded document by document in **`data/kb/manifest.yaml`** with a SHA-256 of the bytes that
+were actually downloaded. The manifest is generated, never hand-edited: `retrieved_on` and the
+hash are facts about a download that happened, so the script that downloaded it writes them.
+
+The documents themselves live in `data/kb/files/`, which is git-ignored. The manifest is the
+committed record of what was fetched, and the hash makes a changed document detectable.
+
+| | |
+| --- | --- |
+| **Documents** | 15 |
+| **Retrieved** | 2026-10-28 |
+| **Manifest** | `data/kb/manifest.yaml` |
+| **Script** | `backend/scripts/fetch_kb.py` · catalogue `backend/app/rag/kb_sources.py` |
+| **Command** | `uv run python manage.py fetch-kb` |
+
+#### The four plan documents
+
+The real Summary of Benefits and Coverage PDF for each plan we sell. The URLs are the
+`URLForSummaryofBenefitsCoverage` values that `fetch_plans` captured from the CMS Plan Attributes
+PUF into `data/mappings/selected_plans.csv`; the plan name and issuer are read back from the
+`plans` table. So the chain runs federal filing → database → knowledge base with nothing retyped.
+
+| Plan | Issuer | Pages | Document |
+| --- | --- | --- | --- |
+| `47501TX0040002` | WellPoint | 7 | Wellpoint Essential Bronze 4000 HSA (+ Incentives) — the hero member's plan |
+| `47501TX0030007` | WellPoint | 7 | Wellpoint Essential Gold POS 700 |
+| `33602TX0461124` | Blue Cross and Blue Shield of Texas | 10 | MyBlue Health Gold 403 |
+| `33602TX0870174` | Blue Cross and Blue Shield of Texas | 10 | Blue Advantage Plus Silver 202 |
+
+**Licence.** Published by each issuer as the federally required Summary of Benefits and Coverage
+for a plan sold on the Marketplace. Copyright of the issuer; quoted and cited for the plan it
+describes, not redistributed — which is why `data/kb/files/` is git-ignored.
+
+All four carry `plan_id` set to the real plan, and retrieval filters on it, so one member can
+never be shown another plan's cost sharing. `tests/test_rag_retrieval.py` asserts that filter.
+
+#### The eleven shared documents
+
+Every one carries `plan_id = "ALL"`.
+
+| doc_id | Source | Publisher | Licence |
+| --- | --- | --- | --- |
+| `cms_uniform_glossary` | [Uniform Glossary of Coverage and Medical Terms](https://www.cms.gov/CCIIO/Resources/Forms-Reports-and-Other-Resources/Downloads/uniform-glossary-final.pdf) (PDF, 4 pages) | CMS / US Department of Labor | US federal government work, public domain |
+| `hcgov_glossary_deductible` | [Deductible](https://www.healthcare.gov/glossary/deductible/) | HealthCare.gov (CMS) | US federal government work, public domain |
+| `hcgov_glossary_copayment` | [Copayment](https://www.healthcare.gov/glossary/co-payment/) | HealthCare.gov (CMS) | as above |
+| `hcgov_glossary_coinsurance` | [Coinsurance](https://www.healthcare.gov/glossary/co-insurance/) | HealthCare.gov (CMS) | as above |
+| `hcgov_glossary_oop_maximum` | [Out-of-pocket maximum](https://www.healthcare.gov/glossary/out-of-pocket-maximum-limit/) | HealthCare.gov (CMS) | as above |
+| `hcgov_appeals_internal` | [Internal appeals](https://www.healthcare.gov/appeal-insurance-company-decision/internal-appeals/) | HealthCare.gov (CMS) | as above |
+| `hcgov_appeals_external` | [External review](https://www.healthcare.gov/appeal-insurance-company-decision/external-review/) | HealthCare.gov (CMS) | as above |
+| `medicare_ncd_220_2_mri` | [NCD 220.2 — Magnetic Resonance Imaging](https://www.cms.gov/medicare-coverage-database/view/ncd.aspx?ncdid=177) | CMS Medicare Coverage Database | as above |
+| `medicare_bpm_ch15_therapy` | [Benefit Policy Manual, Chapter 15](https://www.cms.gov/regulations-and-guidance/guidance/manuals/downloads/bp102c15.pdf), **pages 145–190 only** | CMS | as above |
+| `aetna_precertification_lists` | [Precertification lists for commercial plans](https://www.aetna.com/health-care-professionals/precertification/precertification-lists.html) | Aetna Inc. | Publicly posted by Aetna. Copyright of Aetna; quoted and cited as an example of a commercial prior-authorization policy, not redistributed |
+| `memberassist_member_faq` | `data/kb/authored/member_faq.md` | MemberAssist team (Person B) | Ours. **Marked `generated: true`** in the manifest |
+
+#### Why the Benefit Policy Manual is only pages 145–190
+
+The chapter is 311 pages and almost none of it is about outpatient therapy. The window is located
+at fetch time from the chapter's own section headings (`locate_therapy_pages()` in
+`fetch_kb.py`), not hard-coded, so a CMS revision that moves the sections is followed rather than
+silently mis-indexed. The window runs from section **220, "Coverage of Outpatient Rehabilitation
+Therapy Services"**, to the page before section **230, "Practice of Physical Therapy…"**.
+
+Section 230 was deliberately excluded. It governs who is qualified to furnish therapy and under
+whose supervision — provider licensing, not member coverage — and no member question reaches for
+it. Including it also made the chapter 53% of the whole index, which the build's own dominance
+warning flagged.
+
+#### Two documents that were fetched, indexed, and then removed
+
+Recorded because the reasons are measurements, not opinions.
+
+| Document | Why it was removed |
+| --- | --- |
+| [Aetna Clinical Policy Bulletin 0105 — MRI of the Breast](https://www.aetna.com/cpb/medical/data/100_199/0105.html) | Twenty thousand words of MRI clinical criteria. On "Is a knee MRI covered?" **all 20 vector hits and all 20 BM25 hits came from this one document**, so the member's own plan row never entered the candidate pool. Its slot — the specification's commercial advanced-imaging prior-authorization policy — is filled by Aetna's precertification lists, which is actually about prior authorization and is proportionate at 367 words. |
+| An authored "plan basics" explainer we wrote | A generic explainer we wrote outranked the member's own Summary of Benefits and Coverage on 5 of 14 coverage questions. The authoritative source for what a plan pays is the plan's document, so the explainer was removed rather than left to shadow it. |
+
+#### Sources that could not be used
+
+| Source | Status |
+| --- | --- |
+| eviCore advanced-imaging guidelines | Archive PDF URLs return **404**; the current guidelines index renders its document links with JavaScript, so there is no stable public PDF to cite. Aetna is used instead. |
+| Aetna CPB 0006 | **404** at the path published in older indexes. |
+| BCBSTX provider prior-authorization list | **404** at `bcbstx.com/docs/provider/tx/clinical/prior-auth/prior-auth-ind-exchange.pdf`. |
+
+---
+
+### Verification of the teammate-authored FAQ, 2026-10-28
+
+`data/kb/authored/member_faq.md` was written by Person B. Before it was added to the knowledge
+base, every figure in its section 5 timelines table was checked against the live HealthCare.gov
+pages the document itself cites. **All nine rows matched the published wording. Nothing was
+corrected.**
+
+| Claim in the FAQ | Verified | Page | The published wording |
+| --- | --- | --- | --- |
+| Insurer responds to a prior-authorization request: 15 days | ✅ | internal appeals | "Within 15 days if you're seeking prior authorization for a treatment" |
+| Insurer responds about services already received: 30 days | ✅ | internal appeals | "Within 30 days for medical services already received" |
+| Insurer responds in an urgent-care case: 72 hours | ✅ | internal appeals | "Within 72 hours for urgent care cases" |
+| Deadline to file an internal appeal: 180 days (6 months) | ✅ | internal appeals | "You must file your internal appeal within 180 days (6 months) of receiving notice that your claim was denied" |
+| Internal appeal decision, care not yet received: 30 days | ✅ | internal appeals | "must be completed within 30 days if your appeal is for a service you haven't received yet" |
+| Internal appeal decision, care already received: 60 days | ✅ | internal appeals | "within 60 days if your appeal is for a service you've already received" |
+| Deadline to request external review: 4 months | ✅ | external review | "within 4 months after the date you receive a notice or final determination" |
+| Standard external review decision: no later than 45 days | ✅ | external review | "Standard external reviews are decided as soon as possible — no later than 45 days after the request was received" |
+| Expedited external review decision: no later than 72 hours | ✅ | external review | "Expedited external reviews are decided as soon as possible — no later than 72 hours, or less, depending on the medical urgency of the case" |
+
+Pages checked: <https://www.healthcare.gov/appeal-insurance-company-decision/internal-appeals/>
+and <https://www.healthcare.gov/appeal-insurance-company-decision/external-review/>.
+
+**The check found a defect in our own parser, not in the FAQ.** Two of these facts — the 180-day
+filing deadline and the 45-day external-review decision — were present in the fetched HTML but
+missing from the parsed text, because HealthCare.gov renders those paragraphs into bare `<div>`
+elements and the parser was enumerating `<p>`/`<li>`. It now walks leaf blocks instead. The
+appeals pages went from 628 and 451 words to 763 and 715. Without the FAQ check, the knowledge
+base would have been silently missing the single most-asked appeal deadline.
+`tests/test_rag_parsing.py::TestHtmlParsing::test_text_in_a_bare_div_is_extracted` pins it.
+
+---
+
 ## Sources for later phases
 
 Recorded here now so the plan is visible; not yet called.
 
 | Phase | Source | Endpoint |
 | --- | --- | --- |
-| 2 | Plan SBC PDFs | `URLForSummaryofBenefitsCoverage` from the Plan Attributes PUF (already captured in `selected_plans.csv`) |
-| 2 | CMS/DOL Uniform Glossary, HealthCare.gov glossary and appeals pages | <https://www.healthcare.gov/> |
-| 2 | Medicare NCD 220.2 (MRI), Medicare Benefit Policy Manual | <https://www.cms.gov/medicare-coverage-database/> |
+| ~~2~~ | ~~Plan SBC PDFs, glossaries, appeals, Medicare policy~~ | **Done 2026-10-28 — see section 7 above.** |
 | 12 | NPI Registry, by specialty and city | as section 4 above |
 | 15 | RxNav (RxNorm normalisation) | `https://rxnav.nlm.nih.gov/REST/rxcui.json?name=<name>` — reachable, verified 2026-10-27 |
 | 15 | openFDA drug labels | `https://api.fda.gov/drug/label.json?search=openfda.generic_name:"<name>"&limit=1` — reachable, verified 2026-10-27 |
@@ -305,6 +424,8 @@ uv run python manage.py seed        # migrate, then every step below in order
 | 5 | `manage.py verify-mappings` | verified titles in `snomed_to_icd10.csv` |
 | 6 | `manage.py make-data` | `members`, `claims`, `accumulators`, `pa_requests`, `refills`, `users` |
 | 7 | `manage.py db-stats` | prints row counts and recorded sources |
+| 8 | `manage.py fetch-kb` | `data/kb/files/`, `data/kb/manifest.yaml`, the `kb_documents` source row |
+| 9 | `manage.py build-index` | `data/index/chroma/`, `data/index/bm25.pkl`, `data/index/index_manifest.json` |
 
 Downloads are cached in `data/raw/`, so re-runs do not re-fetch from CMS.
 Delete that directory to force a fresh download.

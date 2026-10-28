@@ -286,6 +286,60 @@ def make_data(verbose: bool = typer.Option(False, "-v", "--verbose")) -> None:
 
 
 @app.command()
+def fetch_kb(verbose: bool = typer.Option(False, "-v", "--verbose")) -> None:
+    """Fetch the knowledge-base documents and regenerate data/kb/manifest.yaml."""
+    _script("fetch_kb", ["-v"] if verbose else [])
+
+
+@app.command()
+def build_index(
+    force: bool = typer.Option(False, "--force", help="Rebuild even if the index is current."),
+    verbose: bool = typer.Option(False, "-v", "--verbose"),
+) -> None:
+    """Parse, chunk, embed and index the knowledge base (Chroma + BM25)."""
+    extra = (["--force"] if force else []) + (["-v"] if verbose else [])
+    _script("build_index", extra)
+
+
+@app.command()
+def ask_index(
+    question: str,
+    plan: str = typer.Option(None, help="Plan id to filter retrieval to."),
+    member: str = typer.Option(None, help="Member id; its plan is looked up."),
+    top: int = typer.Option(5, help="Chunks to keep after reranking."),
+    full: bool = typer.Option(False, "--full", help="Print each chunk in full."),
+) -> None:
+    """Query the index and print vector, BM25, fused and rerank scores."""
+    extra = [question, "--top", str(top)]
+    if plan:
+        extra += ["--plan", plan]
+    if member:
+        extra += ["--member", member]
+    if full:
+        extra.append("--full")
+    _script("ask_index", extra)
+
+
+@app.command()
+def eval_retrieval(
+    calibrate: bool = typer.Option(
+        False, "--calibrate", help="Also sweep the confidence threshold."
+    ),
+    limit: int = typer.Option(0, help="Only the first N test items."),
+    verbose: bool = typer.Option(False, "-v", "--verbose"),
+) -> None:
+    """Measure retrieval hit rate against eval/testset.yaml (Phase 2 done-check)."""
+    extra: list[str] = []
+    if calibrate:
+        extra.append("--calibrate")
+    if limit:
+        extra += ["--limit", str(limit)]
+    if verbose:
+        extra.append("-v")
+    _script("eval_retrieval", extra)
+
+
+@app.command()
 def demo_facts() -> None:
     """Print the demo scenario's real numbers (plan, accumulators, claims)."""
     _script("demo_facts")

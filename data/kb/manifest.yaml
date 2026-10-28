@@ -1,0 +1,268 @@
+manifest_version: 1
+generated_by: backend/scripts/fetch_kb.py
+generated_on: '2026-10-28'
+note: 'Generated file — do not edit by hand. Re-run `manage.py fetch-kb` to refresh it. Every entry''s
+  sha256 is of the bytes stored under data/kb/files, which is git-ignored: the manifest is the committed
+  record of what was fetched.'
+document_count: 15
+documents:
+- doc_id: sbc_33602TX0461124
+  title: Summary of Benefits and Coverage — MyBlue Health Gold℠ 403
+  doc_type: sbc
+  plan_id: 33602TX0461124
+  publisher: Blue Cross and Blue Shield of Texas
+  source_url: https://www.bcbstx.com/sbc/ind/sbc-ghsa01bftitxp-tx-2026.pdf
+  retrieved_on: '2026-10-28'
+  licence_note: Published by the issuer as the federally required Summary of Benefits and Coverage for
+    a plan sold on the Marketplace. Copyright of the issuer; quoted and cited for the plan it describes,
+    not redistributed.
+  generated: false
+  local_file: kb/files/sbc_33602TX0461124.pdf
+  format: pdf
+  size_bytes: 2581197
+  sha256: 3291f5d63ece530a85a62174a94c1f6ade35ac8309a00443adc08967e70ebc33
+  page_count: 10
+- doc_id: sbc_33602TX0870174
+  title: Summary of Benefits and Coverage — Blue Advantage Plus Silver℠ 202
+  doc_type: sbc
+  plan_id: 33602TX0870174
+  publisher: Blue Cross and Blue Shield of Texas
+  source_url: https://www.bcbstx.com/sbc/ind/sbc-sosh30bavitxp-tx-2026.pdf
+  retrieved_on: '2026-10-28'
+  licence_note: Published by the issuer as the federally required Summary of Benefits and Coverage for
+    a plan sold on the Marketplace. Copyright of the issuer; quoted and cited for the plan it describes,
+    not redistributed.
+  generated: false
+  local_file: kb/files/sbc_33602TX0870174.pdf
+  format: pdf
+  size_bytes: 2605415
+  sha256: 295ee7f82c094cb60c074cdfc3aeacb1ffaf8e80a9cb7551a6749b2fbe94c46a
+  page_count: 10
+- doc_id: sbc_47501TX0030007
+  title: Summary of Benefits and Coverage — Wellpoint Essential Gold POS 700 ($0 Virtual PCP + $0 Select
+    Drugs + Incentives)
+  doc_type: sbc
+  plan_id: 47501TX0030007
+  publisher: WellPoint
+  source_url: https://sbc.wellpoint.com/dpsdeeplink/deepLink/WellpointEssentialGoldPOS7000VirtualPCP0SelectDrugsIncentives/8Y81/English/DG166708944626.pdf
+  retrieved_on: '2026-10-28'
+  licence_note: Published by the issuer as the federally required Summary of Benefits and Coverage for
+    a plan sold on the Marketplace. Copyright of the issuer; quoted and cited for the plan it describes,
+    not redistributed.
+  generated: false
+  local_file: kb/files/sbc_47501TX0030007.pdf
+  format: pdf
+  size_bytes: 670893
+  sha256: 6f2608a076c0a161f61ee543317c21c93fb727a2a63c029617ef68ce3958b967
+  page_count: 7
+- doc_id: sbc_47501TX0040002
+  title: Summary of Benefits and Coverage — Wellpoint Essential Bronze 4000 HSA (+ Incentives)
+  doc_type: sbc
+  plan_id: 47501TX0040002
+  publisher: WellPoint
+  source_url: https://sbc.wellpoint.com/dpsdeeplink/deepLink/WellpointEssentialBronze4000HSAIncentives/8Y9B/English/DG166708944883.pdf
+  retrieved_on: '2026-10-28'
+  licence_note: Published by the issuer as the federally required Summary of Benefits and Coverage for
+    a plan sold on the Marketplace. Copyright of the issuer; quoted and cited for the plan it describes,
+    not redistributed.
+  generated: false
+  local_file: kb/files/sbc_47501TX0040002.pdf
+  format: pdf
+  size_bytes: 666248
+  sha256: a665cd69581fba15b5aca0a9eb49d66119caa42ece01eeb5d0af15a4d0d4f9e7
+  page_count: 7
+- doc_id: cms_uniform_glossary
+  title: Uniform Glossary of Coverage and Medical Terms
+  doc_type: glossary
+  plan_id: ALL
+  publisher: CMS / U.S. Department of Labor
+  source_url: https://www.cms.gov/CCIIO/Resources/Forms-Reports-and-Other-Resources/Downloads/uniform-glossary-final.pdf
+  retrieved_on: '2026-10-28'
+  licence_note: Work of the U.S. federal government. Not subject to domestic copyright (17 U.S.C. 105);
+    reproduced for a non-commercial student project.
+  generated: false
+  local_file: kb/files/cms_uniform_glossary.pdf
+  format: pdf
+  size_bytes: 143061
+  sha256: 8be612488582f0d64ecbb37ed86676dfbfb8e08c46065fea8303243544cd9c69
+  page_count: 4
+- doc_id: hcgov_glossary_deductible
+  title: Deductible — HealthCare.gov glossary
+  doc_type: glossary
+  plan_id: ALL
+  publisher: HealthCare.gov (CMS)
+  source_url: https://www.healthcare.gov/glossary/deductible/
+  retrieved_on: '2026-10-28'
+  licence_note: Work of the U.S. federal government. Not subject to domestic copyright (17 U.S.C. 105);
+    reproduced for a non-commercial student project.
+  generated: false
+  local_file: kb/files/hcgov_glossary_deductible.html
+  format: html
+  size_bytes: 417065
+  sha256: 893faddae2ba11e682e49cf552fd1c33f6cd3bafabaaa496e68108aec054e803
+  html_selectors:
+  - main
+  - article
+  - div.content
+- doc_id: hcgov_glossary_copayment
+  title: Copayment — HealthCare.gov glossary
+  doc_type: glossary
+  plan_id: ALL
+  publisher: HealthCare.gov (CMS)
+  source_url: https://www.healthcare.gov/glossary/co-payment/
+  retrieved_on: '2026-10-28'
+  licence_note: Work of the U.S. federal government. Not subject to domestic copyright (17 U.S.C. 105);
+    reproduced for a non-commercial student project.
+  generated: false
+  local_file: kb/files/hcgov_glossary_copayment.html
+  format: html
+  size_bytes: 418854
+  sha256: 4ab1aaddb834482174329df77844ec7af64578fc0b99581f2743f01ae5ecee04
+  html_selectors:
+  - main
+  - article
+  - div.content
+- doc_id: hcgov_glossary_coinsurance
+  title: Coinsurance — HealthCare.gov glossary
+  doc_type: glossary
+  plan_id: ALL
+  publisher: HealthCare.gov (CMS)
+  source_url: https://www.healthcare.gov/glossary/co-insurance/
+  retrieved_on: '2026-10-28'
+  licence_note: Work of the U.S. federal government. Not subject to domestic copyright (17 U.S.C. 105);
+    reproduced for a non-commercial student project.
+  generated: false
+  local_file: kb/files/hcgov_glossary_coinsurance.html
+  format: html
+  size_bytes: 420824
+  sha256: 7e5e1ac8bbe88387f29b2143d34021291ab24ffeffc2d052e18fe17139ea0d9a
+  html_selectors:
+  - main
+  - article
+  - div.content
+- doc_id: hcgov_glossary_oop_maximum
+  title: Out-of-pocket maximum — HealthCare.gov glossary
+  doc_type: glossary
+  plan_id: ALL
+  publisher: HealthCare.gov (CMS)
+  source_url: https://www.healthcare.gov/glossary/out-of-pocket-maximum-limit/
+  retrieved_on: '2026-10-28'
+  licence_note: Work of the U.S. federal government. Not subject to domestic copyright (17 U.S.C. 105);
+    reproduced for a non-commercial student project.
+  generated: false
+  local_file: kb/files/hcgov_glossary_oop_maximum.html
+  format: html
+  size_bytes: 418064
+  sha256: 937a5c8c422388b07b2886d9ad61f6f61cb840310ac5242029fd754d9aac80fe
+  html_selectors:
+  - main
+  - article
+  - div.content
+- doc_id: hcgov_appeals_internal
+  title: Internal appeals — how to appeal an insurance company decision
+  doc_type: appeals
+  plan_id: ALL
+  publisher: HealthCare.gov (CMS)
+  source_url: https://www.healthcare.gov/appeal-insurance-company-decision/internal-appeals/
+  retrieved_on: '2026-10-28'
+  licence_note: Work of the U.S. federal government. Not subject to domestic copyright (17 U.S.C. 105);
+    reproduced for a non-commercial student project.
+  generated: false
+  local_file: kb/files/hcgov_appeals_internal.html
+  format: html
+  size_bytes: 423310
+  sha256: 7a7bf894d480392ff4f45421e3f608052fe8a7db55204cc133f505b97ad004e6
+  html_selectors:
+  - main
+  - article
+  - div.content
+- doc_id: hcgov_appeals_external
+  title: External review — appealing to an independent reviewer
+  doc_type: appeals
+  plan_id: ALL
+  publisher: HealthCare.gov (CMS)
+  source_url: https://www.healthcare.gov/appeal-insurance-company-decision/external-review/
+  retrieved_on: '2026-10-28'
+  licence_note: Work of the U.S. federal government. Not subject to domestic copyright (17 U.S.C. 105);
+    reproduced for a non-commercial student project.
+  generated: false
+  local_file: kb/files/hcgov_appeals_external.html
+  format: html
+  size_bytes: 430917
+  sha256: a427776627def4a79b1894d484a9c560791524d619873e1e38f36bd91a4e5a04
+  html_selectors:
+  - main
+  - article
+  - div.content
+- doc_id: medicare_ncd_220_2_mri
+  title: Medicare National Coverage Determination 220.2 — Magnetic Resonance Imaging
+  doc_type: coverage_policy
+  plan_id: ALL
+  publisher: CMS Medicare Coverage Database
+  source_url: https://www.cms.gov/medicare-coverage-database/view/ncd.aspx?ncdid=177
+  retrieved_on: '2026-10-28'
+  licence_note: Work of the U.S. federal government. Not subject to domestic copyright (17 U.S.C. 105);
+    reproduced for a non-commercial student project.
+  generated: false
+  local_file: kb/files/medicare_ncd_220_2_mri.html
+  format: html
+  size_bytes: 152098
+  sha256: b244d405182c1e27d2dce0637d91116d8496485e9c1cd280dc3620c038065891
+  html_selectors:
+  - '#ncdContent'
+  - div.pageContent
+  - main
+  - article
+- doc_id: medicare_bpm_ch15_therapy
+  title: Medicare Benefit Policy Manual, Chapter 15 — outpatient therapy services
+  doc_type: coverage_policy
+  plan_id: ALL
+  publisher: CMS
+  source_url: https://www.cms.gov/regulations-and-guidance/guidance/manuals/downloads/bp102c15.pdf
+  retrieved_on: '2026-10-28'
+  licence_note: Work of the U.S. federal government. Not subject to domestic copyright (17 U.S.C. 105);
+    reproduced for a non-commercial student project.
+  generated: false
+  local_file: kb/files/medicare_bpm_ch15_therapy.pdf
+  format: pdf
+  size_bytes: 1748363
+  sha256: b34540f5453915a2a97d058f16266ce769b73c0a16f888ca3431ec14b7a80a49
+  page_count: 311
+  page_range:
+  - 145
+  - 190
+  page_range_reason: 'Pages 145-190 of 311: section 220 (coverage of outpatient rehabilitation therapy
+    services) up to the page before section 230 (practice of physical therapy, which is provider licensing
+    rather than member coverage). Located from the chapter''s own headings.'
+- doc_id: aetna_precertification_lists
+  title: Aetna precertification lists for commercial plans
+  doc_type: pa_policy
+  plan_id: ALL
+  publisher: Aetna Inc.
+  source_url: https://www.aetna.com/health-care-professionals/precertification/precertification-lists.html
+  retrieved_on: '2026-10-28'
+  licence_note: Aetna Clinical Policy Bulletin, publicly posted by Aetna Inc. Copyright of Aetna; quoted
+    and cited as an example of a commercial prior-authorization policy, not redistributed.
+  generated: false
+  local_file: kb/files/aetna_precertification_lists.html
+  format: html
+  size_bytes: 155767
+  sha256: 4645bdc2798a0c5ac1be9ef3c9274215854713f28cba3b2f362014cfaaf76461
+  html_selectors:
+  - main
+  - article
+  - div.content
+- doc_id: memberassist_member_faq
+  title: MemberAssist member FAQ — claims, appeals, timelines and limits
+  doc_type: faq
+  plan_id: ALL
+  publisher: MemberAssist team (Person B)
+  source_url: https://github.com/mra-2007/memeberassist/blob/main/data/kb/authored/member_faq.md
+  retrieved_on: '2026-10-28'
+  licence_note: Written by the MemberAssist team (Person B) for this project. Every figure in its timelines
+    table was verified against the HealthCare.gov pages it cites on 2026-10-28; see docs/data_sources.md.
+  generated: true
+  local_file: kb/files/member_faq.md
+  format: authored
+  size_bytes: 8882
+  sha256: 0604876a898eb9ca0bcfc8141c7049a291da9135106dee040f18207d38b44978

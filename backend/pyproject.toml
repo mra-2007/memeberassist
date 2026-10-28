@@ -39,6 +39,11 @@ rag = [
     "sentence-transformers>=3.3",
     "chromadb>=0.5.20",
     "rank-bm25>=0.2.2",
+    # The knowledge base includes published HTML policy pages (healthcare.gov,
+    # the CMS coverage database, a commercial insurer's policy bulletin), so the
+    # parser needs a real HTML tree rather than a regular expression.
+    "beautifulsoup4>=4.12",
+    "lxml>=5.3",
 ]
 security = [
     "presidio-analyzer>=2.2.355",
@@ -104,6 +109,15 @@ ignore = [
 [tool.ruff.lint.per-file-ignores]
 "tests/*" = ["ARG", "S101"]
 "scripts/*" = ["T201"]
+# These two modules exist to normalise and match typographic characters, so the
+# ambiguous-character lint is reporting exactly the content that must be there:
+# the keys of the punctuation map and the en/em dashes in the heading patterns.
+"app/rag/parse.py" = ["RUF001"]
+"app/rag/chunk.py" = ["RUF001"]
+# The parsing tests quote real document text, smart punctuation included -- that
+# is what they exist to assert is normalised.
+"tests/test_rag_parsing.py" = ["RUF001"]
+"tests/test_kb_consistency.py" = ["RUF001"]
 
 # ---------------------------------------------------------------------------
 [tool.mypy]
@@ -116,7 +130,18 @@ ignore_missing_imports = true
 # The specification requires gateway/ and tools/; services/, external/ and
 # auth/ are included because they hold the money arithmetic, the API clients
 # and the password hashing, where a type slip would be expensive.
-files = ["app/gateway", "app/tools", "app/services", "app/external", "app/auth", "app/db"]
+files = [
+    "app/gateway",
+    "app/tools",
+    "app/services",
+    "app/external",
+    "app/auth",
+    "app/db",
+    # Added in Phase 2: the retrieval path decides which plan's documents a
+    # member can read, so a type slip here is a confidentiality bug.
+    "app/rag",
+    "app/ai",
+]
 
 # ---------------------------------------------------------------------------
 [tool.pytest.ini_options]

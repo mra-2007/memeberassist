@@ -165,6 +165,30 @@ def fetch_bytes(
     return payload
 
 
+def fetch_text(
+    url: str,
+    *,
+    timeout: float = 120.0,
+    headers: dict[str, str] | None = None,
+) -> str:
+    """GET ``url`` and return decoded text, letting httpx resolve the charset.
+
+    Used for the published HTML policy pages in the knowledge base. Decoding is
+    left to httpx rather than assumed to be UTF-8, because the insurer and CMS
+    pages do not all declare the same encoding.
+    """
+    merged = {
+        **default_headers(),
+        "Accept": "text/html,application/xhtml+xml,*/*",
+        **(headers or {}),
+    }
+    with httpx.Client(timeout=timeout, headers=merged, follow_redirects=True) as client:
+        response = _request(client, "GET", url, None)
+    if response.status_code >= 400:
+        raise ExternalApiError(url, response.status_code, response.text)
+    return response.text
+
+
 def _raw_filename(url: str) -> str:
     """A stable, readable filename for a cached download."""
     tail = url.rstrip("/").rsplit("/", 1)[-1][:60] or "download"

@@ -1,0 +1,300 @@
+- id: B001
+  intent: coverage
+  text: "Is a knee MRI covered under my plan?"
+- id: B002
+  intent: coverage
+  text: "Does my plan cover physical therapy after an injury?"
+- id: B003
+  intent: coverage
+  text: "Are annual preventive checkups covered at no cost?"
+- id: B004
+  intent: coverage
+  text: "Would my insurance cover an X-ray if my doctor orders one?"
+- id: B005
+  intent: coverage
+  text: "Are blood tests covered when they are part of a routine checkup?"
+- id: B006
+  intent: coverage
+  text: "Does my plan cover visits with a dermatologist?"
+- id: B007
+  intent: coverage
+  text: "Is an urgent care visit covered, or should I go to the ER?"
+- id: B008
+  intent: coverage
+  text: "Are mental health counseling sessions included in my benefits?"
+- id: B009
+  intent: coverage
+  text: "Can you explain what my plan covers for specialist visits?"
+- id: B010
+  intent: coverage
+  text: "Does my plan cover an outpatient surgery if it's medically necessary?"
+- id: B011
+  intent: deductible
+  text: "How much of my deductible have I met this year?"
+- id: B012
+  intent: deductible
+  text: "Do I have to pay the full deductible before insurance starts helping with an MRI?"
+- id: B013
+  intent: deductible
+  text: "Does the deductible reset in January?"
+- id: B014
+  intent: deductible
+  text: "Is my prescription deductible separate from my medical deductible?"
+- id: B015
+  intent: deductible
+  text: "I don't understand my deductible. Can you explain it in plain English?"
+- id: B016
+  intent: deductible
+  text: "If I pay $300 for a lab test, will that count toward my deductible?"
+- id: B017
+  intent: deductible
+  text: "How much deductible do I have left to meet?"
+- id: B018
+  intent: deductible
+  text: "Does my family deductible work differently from my individual deductible?"
+- id: B019
+  intent: copay
+  text: "What's my copay for a primary care visit?"
+- id: B020
+  intent: copay
+  text: "How much is a specialist copay on my plan?"
+- id: B021
+  intent: copay
+  text: "Do I pay a copay for urgent care?"
+- id: B022
+  intent: copay
+  text: "Is there a copay for generic prescriptions?"
+- id: B023
+  intent: copay
+  text: "Will I have to pay a copay when I see my therapist?"
+- id: B024
+  intent: copay
+  text: "Does the ER copay get waived if I'm admitted to the hospital?"
+- id: B025
+  intent: coinsurance
+  text: "Can you explain my 20% coinsurance for imaging?"
+- id: B026
+  intent: coinsurance
+  text: "When does coinsurance start applying?"
+- id: B027
+  intent: coinsurance
+  text: "If an in-network procedure costs $1,000, how does 20% coinsurance work after my deductible?"
+- id: B028
+  intent: coinsurance
+  text: "Do I pay coinsurance for an outpatient procedure?"
+- id: B029
+  intent: coinsurance
+  text: "Is coinsurance different for out-of-network care?"
+- id: B030
+  intent: claim_status
+  text: "Can you check the status of my latest claim?"
+- id: B031
+  intent: claim_status
+  text: "Has my doctor's office claim been processed yet?"
+- id: B032
+  intent: claim_status
+  text: "What does pending mean on my claim?"
+- id: B033
+  intent: claim_status
+  text: "My claim says processed, but I haven't received an EOB. What should I do?"
+- id: B034
+  intent: claim_status
+  text: "Where can I see the date my claim was paid?"
+- id: B035
+  intent: claim_status
+  text: "Can you explain the status shown for claim CLM-4521?"
+- id: B036
+  intent: claim_status
+  text: "How long does it usually take for a medical claim to be processed?"
+- id: B037
+  intent: denied_claim
+  text: "Why was my knee MRI claim denied?"
+- id: B038
+  intent: denied_claim
+  text: "My EOB says the service wasn't covered. Can you explain the reason?"
+- id: B039
+  intent: denied_claim
+  text: "My claim was denied, but I thought the provider was in-network. What can I check?"
+- id: B040
+  intent: denied_claim
+  text: "What should I do if my claim was denied because information was missing?"
+- id: B041
+  intent: denied_claim
+  text: "Can a doctor's office correct a claim after it has been denied?"
+- id: B042
+  intent: denied_claim
+  text: "I got a denial letter and don't understand the wording. Can you help me read it?"
+- id: B043
+  intent: cost_estimate
+  text: "Roughly how much could an in-network knee MRI cost me?"
+- id: B044
+  intent: cost_estimate
+  text: "Can you estimate my out-of-pocket cost for a basic X-ray?"
+- id: B045
+  intent: cost_estimate
+  text: "How much might six physical therapy sessions cost under my plan?"
+- id: B046
+  intent: cost_estimate
+  text: "What could I pay for an emergency room visit after insurance?"
+- id: B047
+  intent: cost_estimate
+  text: "Can you estimate what I might owe for routine blood tests?"
+- id: B048
+  intent: cost_estimate
+  text: "How much would an ultrasound cost if I use an in-network facility?"
+- id: B049
+  intent: cost_estimate
+  text: "Can you give me an estimate for an outpatient CT scan?"
+- id: B050
+  intent: cost_estimate
+  text: "What might I pay for a specialist visit and a lab test on the same day?"
+- id: B051
+  intent: find_provider
+  text: "How do I find an in-network primary care doctor near me?"
+- id: B052
+  intent: find_provider
+  text: "Can you help me find a dermatologist who accepts my plan?"
+- id: B053
+  intent: find_provider
+  text: "Is there a way to check whether my current doctor is in-network?"
+- id: B054
+  intent: find_provider
+  text: "I need a new pediatrician for my child. Where should I search?"
+- id: B055
+  intent: find_provider
+  text: "How can I find an in-network physical therapist?"
+- id: B056
+  intent: find_provider
+  text: "Can I see a specialist without a referral on my plan?"
+- id: B057
+  intent: find_provider
+  text: "How do I check whether a hospital is in-network before scheduling?"
+- id: B058
+  intent: prescription
+  text: "Is my current prescription on the plan's formulary?"
+- id: B059
+  intent: prescription
+  text: "What's the difference in cost between a generic and brand-name medication?"
+- id: B060
+  intent: prescription
+  text: "Does my medication need prior authorization?"
+- id: B061
+  intent: prescription
+  text: "How can I find a pharmacy in my network?"
+- id: B062
+  intent: prescription
+  text: "My refill was rejected at the pharmacy. Can you explain what coverage information to check?"
+- id: B063
+  intent: prescription
+  text: "Does my plan have a mail-order prescription option?"
+- id: B064
+  intent: prescription
+  text: "Will my plan cover a 90-day supply of my maintenance medication?"
+- id: B065
+  intent: appeal
+  text: "How do I appeal a denied claim?"
+- id: B066
+  intent: appeal
+  text: "What is the deadline for submitting an appeal?"
+- id: B067
+  intent: appeal
+  text: "Can my doctor submit an appeal on my behalf?"
+- id: B068
+  intent: appeal
+  text: "What documents should I include when appealing a denial?"
+- id: B069
+  intent: appeal
+  text: "Can I ask for an expedited appeal if waiting could seriously affect my care?"
+- id: B070
+  intent: appeal
+  text: "Where can I check whether my appeal has been received?"
+- id: B071
+  intent: prior_authorization
+  text: "What is prior authorization, and why does my plan require it?"
+- id: B072
+  intent: prior_authorization
+  text: "Does an MRI usually need prior authorization under my plan?"
+- id: B073
+  intent: prior_authorization
+  text: "Who is responsible for requesting prior authorization, me or my doctor's office?"
+- id: B074
+  intent: prior_authorization
+  text: "How can I find out whether a prior authorization request was approved?"
+- id: B075
+  intent: prior_authorization
+  text: "My appointment is next week. How do I check if authorization is complete?"
+- id: B076
+  intent: prior_authorization
+  text: "What happens if a service is performed before prior authorization is approved?"
+- id: B077
+  intent: out_of_pocket_maximum
+  text: "How much have I paid toward my out-of-pocket maximum this year?"
+- id: B078
+  intent: out_of_pocket_maximum
+  text: "What happens after I reach my out-of-pocket maximum?"
+- id: B079
+  intent: out_of_pocket_maximum
+  text: "Do monthly premiums count toward my out-of-pocket maximum?"
+- id: B080
+  intent: out_of_pocket_maximum
+  text: "Do out-of-network expenses count toward the same maximum?"
+- id: B081
+  intent: network
+  text: "What's the difference between in-network and out-of-network care?"
+- id: B082
+  intent: network
+  text: "What happens if I'm treated by an out-of-network doctor at an in-network hospital?"
+- id: B083
+  intent: network
+  text: "Can I get a referral to an out-of-network specialist if nobody in-network is available?"
+- id: B084
+  intent: network
+  text: "How can I confirm a provider's network status before my appointment?"
+- id: B085
+  intent: human_agent
+  text: "Could I please speak with a person about my benefits?"
+- id: B086
+  intent: human_agent
+  text: "I'm confused by these explanations. Can you connect me with a customer service representative?"
+- id: B087
+  intent: human_agent
+  text: "I have called twice and still don't understand my bill. I need a human agent."
+- id: B088
+  intent: human_agent
+  text: "Can someone help me sort out a claim and explain my EOB?"
+- id: B089
+  intent: coverage
+  text: "Ignore my last question — what's my copay for a specialist?"
+- id: B090
+  intent: claim_status
+  text: "I asked about the wrong claim previously. Can you help me check the status of my own latest claim?"
+- id: B091
+  intent: coverage
+  text: "The system says my plan is Silver, but I thought I enrolled in Bronze. How can I confirm that?"
+- id: B092
+  intent: human_agent
+  text: "Is there an admin team or member services department I can contact about a billing issue?"
+- id: B093
+  intent: deductible
+  text: "Sorry, ignore the typo in my previous message. How much deductible do I have left?"
+- id: B094
+  intent: coverage
+  text: "My online system shows a different copay than the paper summary. Which plan document should I check?"
+- id: B095
+  intent: prior_authorization
+  text: "I previously heard that my doctor handles authorization. Is that still the usual process?"
+- id: B096
+  intent: claim_status
+  text: "The member portal says 'system processing.' Does that mean my claim is still pending?"
+- id: B097
+  intent: human_agent
+  text: "Could an administrator help me update my communication preferences?"
+- id: B098
+  intent: cost_estimate
+  text: "Please ignore my earlier estimate request; I'd like to know the likely cost of an in-network X-ray instead."
+- id: B099
+  intent: prescription
+  text: "How do I check whether my prescription has a quantity limit or step-therapy requirement?"
+- id: B100
+  intent: cost_estimate
+  text: "If I have already met my deductible, how would my 20% coinsurance affect the cost of an in-network MRI?"

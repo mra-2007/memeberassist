@@ -68,3 +68,10 @@ logs/
 # ---- local db fallback ----
 *.sqlite3
 *.db
+
+# ---- teammate drop-box ----
+# Files arrive here and are then moved into their real homes (eval/, docs/,
+# data/kb/authored/). Keeping the originals as well would mean two copies of
+# the same test data drifting apart. docs/evaluation.md records every change
+# made to a supplied file, so the originals are not needed in git.
+team_inputs/

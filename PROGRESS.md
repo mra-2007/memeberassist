@@ -3,7 +3,7 @@
 Live state of the build. Every phase is done only when its done-check passes **with pasted
 evidence**. Specification: `MASTER_PROMPT.md`. Working rules: `CLAUDE.md`.
 
-- **Current phase:** Phase 2 — Knowledge base and RAG index
+- **Current phase:** Phase 3 — Gateway skeleton, LLM router, core tools
 - **Last updated:** 2026-10-28
 - **Tags:** `v1-core` not yet reached (Phase 8) · `v2-final` not yet reached (Phase 18)
 
@@ -59,14 +59,22 @@ Targets for the phases ahead:
 
 | Metric | Target | Latest | Measured |
 | --- | --- | --- | --- |
-| Retrieval hit rate (right chunk in top 5) | ≥ 90% | — | — |
-| Answer correctness (judge + 10 manual) | ≥ 85% | — | — |
-| Faithfulness (RAGAS) | ≥ 0.85 | — | — |
-| Correct "I don't know" | ≥ 90% | — | — |
-| PII masking recall | ≥ 95% | — | — |
-| Attack blocking | 100% (benign false positives ≤ 5%) | — | — |
-| Latency p90 | < 5 s | — | — |
-| Intent classifier macro-F1 | reported | — | — |
+| Retrieval hit rate (right chunk in top 5) | ≥ 90% | **86%** (18/21) ❌ | 2026-10-28 |
+| Answer correctness (judge + 10 manual) | ≥ 85% | — | needs the LLM (Phase 3) |
+| Faithfulness (RAGAS) | ≥ 0.85 | — | needs the LLM (Phase 3) |
+| Correct "I don't know" | ≥ 90% | **50%** (2/4) ❌ | 2026-10-28 |
+| PII masking recall | ≥ 95% | — | needs the masker (Phase 3) |
+| Attack blocking | 100% (benign false positives ≤ 5%) | — | needs the guard (Phase 4) |
+| Latency p90 | < 5 s | — | needs the pipeline (Phase 3) |
+| Intent classifier macro-F1 | reported | — | needs the classifier (Phase 4) |
+
+**Both Phase 2 metrics are below target, and both have the same single cause.** The member's plan
+document prices the benefit as "Rehabilitation services" and never says "physiotherapy"; the
+retrieval misses are all that one vocabulary gap, and the confidence check fails because a
+cross-encoder scores stylistic similarity rather than answerability. The fix is already-verified
+Phase 1 data — `procedure_synonyms.csv` and `code_to_benefit.csv` — used to expand a query before
+searching. The specification puts that with the answering step in Phase 3, so it is scheduled
+there rather than half-built now. Full analysis in `docs/evaluation.md`.
 
 ---
 
@@ -426,15 +434,161 @@ Worth recording, because each was a real defect rather than a test adjustment:
 | The schema has one squashed initial migration | Pre-release, with no deployed database and a reproducible pipeline. One migration matching the models is more honest than a chain that cannot replay onto a populated table. |
 | `claims.applied_to_oop` added beyond section 8 | Without it, the accumulator cannot be independently recomputed from the claims once balance billing exists. |
 
-## Phase 2 — Knowledge base and RAG index ⬜ not started
+## Phase 2 — Knowledge base and RAG index ✅ done (2026-10-28)
 
-- [ ] `fetch_kb.py` + `data/kb/manifest.yaml` (10–20 documents)
-- [ ] Parsing (PyMuPDF text, pdfplumber tables → self-contained sentences), chunking, metadata
-- [ ] bge-small embeddings into Chroma + BM25 index + index manifest
-- [ ] `manage.py ask-index` printing vector, BM25 and rerank scores
-- [ ] First 20 questions of `eval/testset.yaml`
+- [x] `fetch_kb.py` + generated `data/kb/manifest.yaml` — **15 documents**, each with a SHA-256
+- [x] Parsing: PyMuPDF text, pdfplumber tables → self-contained sentences, 138 benefit rows
+- [x] Chunking by heading, 300–500 words prose / 160 words tables, rows never split
+- [x] bge-small-en-v1.5 into persistent Chroma + BM25 on disk + index manifest with staleness checks
+- [x] `manage.py ask-index` printing vector, BM25, fused and rerank scores
+- [x] `eval/testset.yaml` — all 50 questions, with expected facts, sources, tools and behaviour
+- [x] `manage.py eval-retrieval [--calibrate]` — hit rate and a reproducible threshold sweep
+- [x] `tests/test_rag_parsing.py`, `tests/test_rag_retrieval.py`, `tests/test_kb_consistency.py`
 
-**Done-check:** KB consistency test and plan-filter test pass; retrieval hit rate printed.
+**Done-check:** KB consistency and plan-filter tests pass; retrieval hit rate printed (86%).
+**Two targets are not met.** They are reported, diagnosed and scheduled, not worked around.
+
+### The knowledge base
+
+```
+$ uv run python manage.py fetch-kb
+  ok   sbc_33602TX0461124   33602TX0461124  2,581,197B 10p
+  ok   sbc_33602TX0870174   33602TX0870174  2,605,415B 10p
+  ok   sbc_47501TX0030007   47501TX0030007    670,893B  7p
+  ok   sbc_47501TX0040002   47501TX0040002    666,248B  7p
+  ok   cms_uniform_glossary          ALL      143,061B  4p
+  ok   hcgov_glossary_deductible     ALL      417,079B html
+  ok   hcgov_glossary_copayment      ALL      418,868B html
+  ok   hcgov_glossary_coinsurance    ALL      420,838B html
+  ok   hcgov_glossary_oop_maximum    ALL      418,078B html
+  ok   hcgov_appeals_internal        ALL      423,324B html
+  ok   hcgov_appeals_external        ALL      430,931B html
+  ok   medicare_ncd_220_2_mri        ALL      152,098B html
+  ok   medicare_bpm_ch15_therapy     ALL    1,748,363B 311p -> pages 145-190
+  ok   aetna_precertification_lists  ALL      155,767B html
+  ok   memberassist_member_faq       ALL        8,882B authored
+15 documents in data\kb\manifest.yaml
+```
+
+Four real issuer SBCs (one per plan, carrying that plan's `plan_id`) plus eleven shared documents
+at `plan_id = ALL`. Every source, licence and retrieval date is in `docs/data_sources.md`.
+
+The Benefit Policy Manual window is **located, not hard-coded**: `locate_therapy_pages()` reads
+the chapter's own section headings and returns 220 ("Coverage of Outpatient Rehabilitation Therapy
+Services") up to the page before 230, so a CMS revision is followed rather than mis-indexed.
+
+### The index
+
+```
+$ uv run python manage.py build-index --force
+145 prose chunks and 74 table chunks; words per chunk min 48 / median 151 / max 512
+Document share warning — these shared documents each hold more than 25% of the index:
+  medicare_bpm_ch15_therapy            73 chunks    33% of the index
+Built in 69.3s
+
+$ cat data/index/index_manifest.json
+chunks 219 · embed BAAI/bge-small-en-v1.5 · rerank BAAI/bge-reranker-base
+chunker v4 · docs 15 · built 2026-10-28
+```
+
+The manifest records the embedding model, the reranker, the chunker version and a hash per
+document. `staleness_reasons()` compares it with the knowledge base and names every reason to
+rebuild, so a stale index is reported rather than silently queried — verified in practice: bumping
+the chunker printed *"chunker version changed: index built with v3, code is v4"* and rebuilt.
+
+### Retrieval, end to end
+
+```
+$ uv run python manage.py ask-index "Is a knee MRI covered?" --member M10234
+member M10234 -> plan 47501TX0040002
+
+Is a knee MRI covered?  (plan filter: 47501TX0040002)
+ # | Document              | Pg | Kind  | Vector        | BM25        | RRF     | Rerank | Found by
+ 1 | cms_uniform_glossary  |  3 | prose | 0.5791 (#12)  | -           | 0.01389 | 0.0040 | vector
+ 2 | sbc_47501TX0040002    |  2 | prose | 0.5923 (#6)   | -           | 0.02273 | 0.0033 | vector
+ 3 | cms_uniform_glossary  |  1 | prose | 0.5948 (#5)   | -           | 0.01538 | 0.0026 | vector
+ 4 | sbc_47501TX0040002    |  2 | table | 0.5868 (#8)   | -           | 0.02206 | 0.0016 | vector
+ 5 | sbc_47501TX0040002    |  6 | prose | 0.5827 (#10)  | 4.1151 (#20)| 0.04018 | 0.0014 | both
+```
+
+Vector top 20 + BM25 top 20, fused with reciprocal rank fusion (k = 60), reranked with
+bge-reranker-base, best 5 kept. The plan filter is applied inside the vector query and again on
+the BM25 results, and **comes from the session, never from the question**.
+
+### Measurements
+
+```
+$ uv run python manage.py eval-retrieval --calibrate
+Hit rate: 18/21 = 86%  (target >= 90%)
+3 multi-turn item(s) scored on their first turn only; follow-up rewriting arrives in Phase 3.
+
+Misses:
+  T03 expected sbc_47501TX0040002:p3, got medicare_bpm_ch15_therapy p147/p174 ...
+  T04 expected sbc_47501TX0040002:p4 or p3, got medicare_bpm_ch15_therapy p150/p160 ...
+  T33 expected sbc_47501TX0040002:p3 or p2, got medicare_bpm_ch15_therapy p155/p145 ...
+
+Confidence calibration — 21 answerable, 4 unanswerable
+  answerable top scores  : min 0.01602 max 0.98213
+  unanswerable top scores: min 0.00051 max 0.07514
+Best threshold 0.01602 -> 23/25 correct
+Correct "I don't know": 2/4 = 50%  (target >= 90%)
+```
+
+**All three retrieval misses are one defect.** The plan prices the benefit as "Rehabilitation
+services" and never writes "physiotherapy" or "physical therapy". Inspecting the candidate pool
+directly showed the SBC page 3 row **was never a candidate** — not mis-ranked, absent. No
+reranking or weighting can recover a chunk that was never retrieved.
+
+**The confidence threshold cannot be fixed by moving it.** The lowest-scoring *answerable*
+question scores 0.01602 and the highest-scoring *unanswerable* one ("Will my insurance pay for
+LASIK eye surgery?") scores 0.07514, higher than eight answerable questions. A cross-encoder
+scores stylistic similarity, not answerability. The threshold in force is the fitted 0.016, and
+`app/rag/confidence.py` records the number, the date, the command and what it actually achieves.
+
+Both gaps have the same fix, and it is Phase 1 data we already verified:
+`procedure_synonyms.csv` maps "knee mri" → 73721 and `code_to_benefit.csv` maps 73721 → the
+benefit category a plan prices. The specification puts query expansion and the router-first tool
+pre-fetch in Phase 3, so it is scheduled there.
+
+### Tests
+
+```
+$ uv run python manage.py test      -> 151 passed, 10 deselected in 139s
+$ uv run pytest                     -> 161 passed in 142s     (was 89 after Phase 1)
+$ uv run python manage.py lint      -> All checks passed! · 33 files formatted · eslint clean
+$ uv run python manage.py typecheck -> Success: no issues found in 28 source files
+```
+
+mypy now also covers `app/rag` and `app/ai`, because the retrieval path decides which plan's
+documents a member may read and a type slip there is a confidentiality bug. Fixing it properly
+(rather than with `type: ignore`) replaced two unchecked `int()` casts on Chroma metadata with a
+narrowing helper, and turned a silent `zip(None)` into a named error that tells you to rebuild.
+
+### What the measurements caught, and what changed because of it
+
+Each of these was a real defect found by running the thing, not by reading the code.
+
+| Found by | Defect | Fix |
+| --- | --- | --- |
+| Verifying the teammate FAQ's timelines against HealthCare.gov | The HTML parser enumerated `<p>`/`<li>`, but HealthCare.gov renders explainer paragraphs into bare `<div>`s. The **180-day appeal filing deadline** and the **45-day external-review decision** were in the fetched HTML and missing from the index — the single most-asked appeal deadline, silently absent. | Walk leaf blocks instead of a tag whitelist. The two appeals pages went from 628 and 451 words to 763 and 715. |
+| First `ask-index` run on a knee-MRI question | All 40 candidates came from one 20,000-word Aetna bulletin on **breast** MRI; the member's own plan row never entered the pool. | Removed that document and filled the commercial-PA slot with Aetna's precertification lists (367 words, actually about prior authorization). Added a build-time warning when a shared document exceeds 25% of the index. |
+| That new warning, on its first run | The Medicare manual was 53% of the index. | Narrowed to section 220 (coverage), dropping 230 (provider licensing, which no member asks about). Now 33%. |
+| Inspecting the candidate pool for therapy questions | SBC page 3 groups **15 priced benefits into one chunk**, so the rehabilitation row was ~7% of its chunk. | Table chunks target 160 words, not 520. Rows still never split. |
+| First build's chunk statistics | Six chunks were navigation — "Back to glossary", "Email this page". | Bidirectional runt merging plus a 12-word floor. Smallest chunk went from 3 words to 61. |
+| Comparing authored and published documents | An explainer we wrote outranked the member's own SBC on 5 of 14 coverage questions. | Removed it. The authoritative source for what a plan pays is the plan's own document. |
+| `tests/test_data_integrity.py` (a Phase 1 test) | The new `kb_documents` provenance row had prose where a URL belonged. | Points at the committed manifest. The Phase 1 test was right to insist. |
+
+### Deviations from the specification, and why
+
+| Deviation | Reason |
+| --- | --- |
+| The commercial advanced-imaging prior-authorization document is Aetna's **precertification lists**, not a clinical policy bulletin | CPB 0105 (breast MRI) was tried first and measured: it supplied every retrieval candidate for any imaging question, so the member's own plan never reached the reranker. eviCore's guideline PDFs 404 and its index is JavaScript-rendered. Recorded in `docs/data_sources.md`. |
+| Only **section 220** of Benefit Policy Manual chapter 15, not 220 and 230 | 230 is provider licensing, not member coverage. Including it made the chapter 53% of the index. |
+| Retrieval adds an **own-plan fusion weight (1.5×)** and a **per-document cap (2 chunks)** beyond the specified pipeline | Two shared documents contributed 187 of 303 chunks in the first build, against 15 for the member's own plan, and three coverage questions were answered out of the wrong document. Both are weights rather than filters, so a glossary question still reaches the glossary. |
+| The reranker reads **title + section + text**, not text alone | A passage does not say which document it belongs to. With the title in view, a breast-MRI bulletin stops outranking the member's plan on a knee-MRI question. |
+| **Table chunks target 160 words**, prose 420 | A benefit row only retrieves if it is a meaningful share of its own chunk. Measured, not guessed. |
+| 15 documents, not the 16 first assembled | One authored explainer and one insurer bulletin were removed for the measured reasons above. Still inside the specification's 10–20. |
+| The confidence check is a single threshold **and is reported as insufficient** | The specification asks for a calibrated threshold; it was built and calibrated. The honest result is 50% against a 90% target, so it is reported with its cause and its scheduled fix rather than presented as working. |
 
 ## Phase 3 — Gateway skeleton, LLM router, core tools ⬜ not started
 
@@ -507,20 +661,24 @@ and each handoff trigger firing with its summary.
 
 ## Next steps (exact)
 
-1. **Phase 2 — knowledge base and RAG index.** No keys needed; the SBC URLs for all four plans
-   are already captured in `data/mappings/selected_plans.csv`.
-   - `scripts/fetch_kb.py` + `data/kb/manifest.yaml`: the four plans' real SBC PDFs, the CMS/DOL
-     Uniform Glossary, HealthCare.gov appeals pages, Medicare NCD 220.2, the outpatient-therapy
-     sections of the Medicare Benefit Policy Manual, one public commercial imaging
-     prior-authorization policy, and our own FAQs.
-   - Install the RAG and AI extras: `uv sync --extra rag --extra ai`.
-   - Parse with PyMuPDF and pdfplumber, rewrite table rows as self-contained sentences, chunk by
-     heading, embed with bge-small into Chroma, build the BM25 index, write the index manifest.
-   - `manage.py ask-index` printing vector, BM25 and rerank scores.
-   - First 20 questions of `eval/testset.yaml`; print the retrieval hit rate.
-   - `tests/test_kb_consistency.py`: every `plan_benefits` number must agree with that plan's SBC
-     text, and a plan filter test proving another plan's chunk is never returned.
-2. **Save `.env`** with `GEMINI_API_KEY` and `GROQ_API_KEY` (blocker B2) — needed before Phase 3,
-   not before Phase 2.
-3. ~~Install Docker Desktop~~ — **done 2026-10-28.** The database is PostgreSQL 16 in Docker and
-   every Phase 1 done-check has been re-run against it.
+1. **Phase 3 — gateway skeleton, LLM router, core tools.** Blocked on `.env` keys (B2).
+   - `manage.py check-models` / `download-models`; `app/gateway/llm_router.py` with the Gemini,
+     Groq, OpenRouter and Ollama adapters and the documented fallback order.
+   - Gateway layers 1, 3, 4, 5, 7, 8: identity, masking + vault, the locked LLM call, safe tool
+     execution, unmasking, and the hash-chained audit log.
+   - **Carry over from Phase 2, and do it before measuring retrieval again:** query expansion
+     through `data/mappings/procedure_synonyms.csv` and `data/mappings/code_to_benefit.csv`, so
+     "physiotherapy" reaches a document that says "Rehabilitation services". This is the fix for
+     both of Phase 2's missed targets — the 86% hit rate and the 50% correct "I don't know".
+     Re-run `manage.py eval-retrieval --calibrate` afterwards and re-fit the threshold.
+   - `rag/answer.py`: `[S#]` citations, the citation check, and the "I couldn't find this in your
+     plan documents" path with the offer of a human.
+   - Core tools behind the allowlist; the cost estimator calling `app/services/cost_sharing.py`.
+   - `/api/chat` with SSE.
+2. **Save `.env`** with `GEMINI_API_KEY` and `GROQ_API_KEY` (blocker B2). Phase 3 cannot start
+   without at least one.
+3. **Cross-check the four plans against the live CMS Marketplace API** now that
+   `CMS_MARKETPLACE_API_KEY` is set: one call first to confirm the response shape, then compare
+   deductibles, out-of-pocket maximums and cost sharing against the PUF-derived rows, record the
+   HIOS ids and any differences in `docs/data_sources.md`, and correct only what differs. The PUF
+   path stays as the fallback. The key expires every 60 days.

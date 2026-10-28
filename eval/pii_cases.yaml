@@ -1,0 +1,499 @@
+- id: P001
+  text: "Hi, I'm Priya Sharma, member M10234, call me on +91 98765 43210"
+  pii:
+    - {type: PERSON, value: "Priya Sharma"}
+    - {type: MEMBER_ID, value: "M10234"}
+    - {type: PHONE, value: "+91 98765 43210"}
+- id: P002
+  text: "My name is Aarav Mehta and my claim CLM-4521 is still pending."
+  pii:
+    - {type: PERSON, value: "Aarav Mehta"}
+    - {type: CLAIM_ID, value: "CLM-4521"}
+- id: P003
+  text: "This is Emily Carter, born 03/14/1988. Can you explain my deductible?"
+  pii:
+    - {type: PERSON, value: "Emily Carter"}
+    - {type: DOB, value: "03/14/1988"}
+- id: P004
+  text: "Please email the EOB to olivia.bennett@example.com; my member ID is M38417."
+  pii:
+    - {type: EMAIL, value: "olivia.bennett@example.com"}
+    - {type: MEMBER_ID, value: "M38417"}
+- id: P005
+  text: "I'm Rahul Iyer, and the authorization number is PA-889."
+  pii:
+    - {type: PERSON, value: "Rahul Iyer"}
+    - {type: PA_ID, value: "PA-889"}
+- id: P006
+  text: "Call Michael Turner at (214) 555-0147 about claim CLM-7316."
+  pii:
+    - {type: PERSON, value: "Michael Turner"}
+    - {type: PHONE, value: "(214) 555-0147"}
+    - {type: CLAIM_ID, value: "CLM-7316"}
+- id: P007
+  text: "My date of birth is 14-03-1988 and my member number is M61502."
+  pii:
+    - {type: DOB, value: "14-03-1988"}
+    - {type: MEMBER_ID, value: "M61502"}
+- id: P008
+  text: "I'm Ananya Rao; my email is ananya.rao@example.com."
+  pii:
+    - {type: PERSON, value: "Ananya Rao"}
+    - {type: EMAIL, value: "ananya.rao@example.com"}
+- id: P009
+  text: "The form has my Aadhaar-style number as 4821 7735 1290."
+  pii:
+    - {type: AADHAAR_STYLE, value: "4821 7735 1290"}
+- id: P010
+  text: "My sample SSN-style number is 987-65-4321; please check the profile form."
+  pii:
+    - {type: SSN_STYLE, value: "987-65-4321"}
+- id: P011
+  text: "Hello, I'm Daniel Brooks, member M20984, and my phone is (415) 555-0182."
+  pii:
+    - {type: PERSON, value: "Daniel Brooks"}
+    - {type: MEMBER_ID, value: "M20984"}
+    - {type: PHONE, value: "(415) 555-0182"}
+- id: P012
+  text: "Neha Kapoor here. Please check claim CLM-8034 and email me at neha.kapoor@example.com."
+  pii:
+    - {type: PERSON, value: "Neha Kapoor"}
+    - {type: CLAIM_ID, value: "CLM-8034"}
+    - {type: EMAIL, value: "neha.kapoor@example.com"}
+- id: P013
+  text: "My birthday is March 14 1988."
+  pii:
+    - {type: DOB, value: "March 14 1988"}
+- id: P014
+  text: "I'm Sophia Mitchell, and I need help with PA-417."
+  pii:
+    - {type: PERSON, value: "Sophia Mitchell"}
+    - {type: PA_ID, value: "PA-417"}
+- id: P015
+  text: "Please call +91 91234 56780; I'm Vikram Nair."
+  pii:
+    - {type: PHONE, value: "+91 91234 56780"}
+    - {type: PERSON, value: "Vikram Nair"}
+- id: P016
+  text: "My member ID M74016 is linked to the email ethan.morris@example.com."
+  pii:
+    - {type: MEMBER_ID, value: "M74016"}
+    - {type: EMAIL, value: "ethan.morris@example.com"}
+- id: P017
+  text: "I'm Kavya Reddy, born 22-11-1996, and my claim is CLM-1642."
+  pii:
+    - {type: PERSON, value: "Kavya Reddy"}
+    - {type: DOB, value: "22-11-1996"}
+    - {type: CLAIM_ID, value: "CLM-1642"}
+- id: P018
+  text: "Could you update the phone for Grace Wilson to (312) 555-0169?"
+  pii:
+    - {type: PERSON, value: "Grace Wilson"}
+    - {type: PHONE, value: "(312) 555-0169"}
+- id: P019
+  text: "My Aadhaar-style ID is 6152 0843 7291 and my name is Arjun Desai."
+  pii:
+    - {type: AADHAAR_STYLE, value: "6152 0843 7291"}
+    - {type: PERSON, value: "Arjun Desai"}
+- id: P020
+  text: "Contact me at maya.patel@example.com about member M85310."
+  pii:
+    - {type: EMAIL, value: "maya.patel@example.com"}
+    - {type: MEMBER_ID, value: "M85310"}
+- id: P021
+  text: "This is James Foster, DOB: 07/26/1991, phone (617) 555-0128."
+  pii:
+    - {type: PERSON, value: "James Foster"}
+    - {type: DOB, value: "07/26/1991"}
+    - {type: PHONE, value: "(617) 555-0128"}
+- id: P022
+  text: "I need help with claim CLM-2907; I'm Rohan Kulkarni."
+  pii:
+    - {type: CLAIM_ID, value: "CLM-2907"}
+    - {type: PERSON, value: "Rohan Kulkarni"}
+- id: P023
+  text: "My SSN-style test value is 654-32-1098."
+  pii:
+    - {type: SSN_STYLE, value: "654-32-1098"}
+- id: P024
+  text: "Please send the letter to Ava Reed at ava.reed@example.com."
+  pii:
+    - {type: PERSON, value: "Ava Reed"}
+    - {type: EMAIL, value: "ava.reed@example.com"}
+- id: P025
+  text: "I'm Saanvi Joshi and my prior authorization is PA-602."
+  pii:
+    - {type: PERSON, value: "Saanvi Joshi"}
+    - {type: PA_ID, value: "PA-602"}
+- id: P026
+  text: "The callback number is +91 99887 76655, and the member is Kiran Malhotra."
+  pii:
+    - {type: PHONE, value: "+91 99887 76655"}
+    - {type: PERSON, value: "Kiran Malhotra"}
+- id: P027
+  text: "My member number is M49172 and my birthday is April 9, 1990."
+  pii:
+    - {type: MEMBER_ID, value: "M49172"}
+    - {type: DOB, value: "April 9, 1990"}
+- id: P028
+  text: "I'm Benjamin Hayes; you can reach me at ben.hayes@example.com or (206) 555-0174."
+  pii:
+    - {type: PERSON, value: "Benjamin Hayes"}
+    - {type: EMAIL, value: "ben.hayes@example.com"}
+    - {type: PHONE, value: "(206) 555-0174"}
+- id: P029
+  text: "Please review PA-731 for Meera Chawla."
+  pii:
+    - {type: PA_ID, value: "PA-731"}
+    - {type: PERSON, value: "Meera Chawla"}
+- id: P030
+  text: "My date of birth is 1992-08-17 and my member ID is M32649."
+  pii:
+    - {type: DOB, value: "1992-08-17"}
+    - {type: MEMBER_ID, value: "M32649"}
+- id: P031
+  text: "I'm Chloe Adams, and claim CLM-6148 appears twice."
+  pii:
+    - {type: PERSON, value: "Chloe Adams"}
+    - {type: CLAIM_ID, value: "CLM-6148"}
+- id: P032
+  text: "Email the estimate to rohit.bose@example.com; my phone is +91 90123 45678."
+  pii:
+    - {type: EMAIL, value: "rohit.bose@example.com"}
+    - {type: PHONE, value: "+91 90123 45678"}
+- id: P033
+  text: "My Aadhaar-style number is 7319 4602 1857, and I'm Nikhil Sethi."
+  pii:
+    - {type: AADHAAR_STYLE, value: "7319 4602 1857"}
+    - {type: PERSON, value: "Nikhil Sethi"}
+- id: P034
+  text: "This is William Price, member M57031, with claim CLM-4826."
+  pii:
+    - {type: PERSON, value: "William Price"}
+    - {type: MEMBER_ID, value: "M57031"}
+    - {type: CLAIM_ID, value: "CLM-4826"}
+- id: P035
+  text: "I'm Diya Menon. My email is diya.menon@example.com and DOB is 05/19/1994."
+  pii:
+    - {type: PERSON, value: "Diya Menon"}
+    - {type: EMAIL, value: "diya.menon@example.com"}
+    - {type: DOB, value: "05/19/1994"}
+- id: P036
+  text: "Please call Isabella Scott at (718) 555-0193."
+  pii:
+    - {type: PERSON, value: "Isabella Scott"}
+    - {type: PHONE, value: "(718) 555-0193"}
+- id: P037
+  text: "The prior authorization is PA-256; member ID M10863."
+  pii:
+    - {type: PA_ID, value: "PA-256"}
+    - {type: MEMBER_ID, value: "M10863"}
+- id: P038
+  text: "My name is Aditya Pillai and my SSN-style test number is 321-54-9876."
+  pii:
+    - {type: PERSON, value: "Aditya Pillai"}
+    - {type: SSN_STYLE, value: "321-54-9876"}
+- id: P039
+  text: "Can you check claim CLM-9503 for Natalie Cooper, born September 2 1987?"
+  pii:
+    - {type: CLAIM_ID, value: "CLM-9503"}
+    - {type: PERSON, value: "Natalie Cooper"}
+    - {type: DOB, value: "September 2 1987"}
+- id: P040
+  text: "I'm Isha Bhat, and the phone on file should be +91 93456 78120."
+  pii:
+    - {type: PERSON, value: "Isha Bhat"}
+    - {type: PHONE, value: "+91 93456 78120"}
+- id: P041
+  text: "Please send my claim update to noah.gray@example.com."
+  pii:
+    - {type: EMAIL, value: "noah.gray@example.com"}
+- id: P042
+  text: "My member ID is M66204; my date of birth is 1985/12/03."
+  pii:
+    - {type: MEMBER_ID, value: "M66204"}
+    - {type: DOB, value: "1985/12/03"}
+- id: P043
+  text: "I'm Ethan Collins, and PA-943 was submitted yesterday."
+  pii:
+    - {type: PERSON, value: "Ethan Collins"}
+    - {type: PA_ID, value: "PA-943"}
+- id: P044
+  text: "My Aadhaar-style number is 2946 8013 5724."
+  pii:
+    - {type: AADHAAR_STYLE, value: "2946 8013 5724"}
+- id: P045
+  text: "This is Pooja Shetty, member M43190, call +91 97654 32109."
+  pii:
+    - {type: PERSON, value: "Pooja Shetty"}
+    - {type: MEMBER_ID, value: "M43190"}
+    - {type: PHONE, value: "+91 97654 32109"}
+- id: P046
+  text: "Could you email the EOB to harper.james@example.com for claim CLM-3751?"
+  pii:
+    - {type: EMAIL, value: "harper.james@example.com"}
+    - {type: CLAIM_ID, value: "CLM-3751"}
+- id: P047
+  text: "I'm Lucas Ward; my birthday is 12/01/1993."
+  pii:
+    - {type: PERSON, value: "Lucas Ward"}
+    - {type: DOB, value: "12/01/1993"}
+- id: P048
+  text: "The SSN-style placeholder on my sample form reads 456-78-9012."
+  pii:
+    - {type: SSN_STYLE, value: "456-78-9012"}
+- id: P049
+  text: "Please check M29581 for Anushka Verma."
+  pii:
+    - {type: MEMBER_ID, value: "M29581"}
+    - {type: PERSON, value: "Anushka Verma"}
+- id: P050
+  text: "I'm Amelia Ross, and my contact email is amelia.ross@example.com."
+  pii:
+    - {type: PERSON, value: "Amelia Ross"}
+    - {type: EMAIL, value: "amelia.ross@example.com"}
+- id: P051
+  text: "My claim ID is CLM-2075 and my phone is (303) 555-0116."
+  pii:
+    - {type: CLAIM_ID, value: "CLM-2075"}
+    - {type: PHONE, value: "(303) 555-0116"}
+- id: P052
+  text: "I'm Siddharth Jain, DOB 17-06-1991, member M81743."
+  pii:
+    - {type: PERSON, value: "Siddharth Jain"}
+    - {type: DOB, value: "17-06-1991"}
+    - {type: MEMBER_ID, value: "M81743"}
+- id: P053
+  text: "Please review authorization PA-385 for Olivia King."
+  pii:
+    - {type: PA_ID, value: "PA-385"}
+    - {type: PERSON, value: "Olivia King"}
+- id: P054
+  text: "My email is kevin.ward@example.com and my phone is (702) 555-0135."
+  pii:
+    - {type: EMAIL, value: "kevin.ward@example.com"}
+    - {type: PHONE, value: "(702) 555-0135"}
+- id: P055
+  text: "I'm Tara Krishnan; my member ID is M56028."
+  pii:
+    - {type: PERSON, value: "Tara Krishnan"}
+    - {type: MEMBER_ID, value: "M56028"}
+- id: P056
+  text: "The form lists my birthday as February 28, 1989."
+  pii:
+    - {type: DOB, value: "February 28, 1989"}
+- id: P057
+  text: "Please call Samuel Perry at (919) 555-0158 about his EOB."
+  pii:
+    - {type: PERSON, value: "Samuel Perry"}
+    - {type: PHONE, value: "(919) 555-0158"}
+- id: P058
+  text: "I'm Manav Shah and the claim reference is CLM-7460."
+  pii:
+    - {type: PERSON, value: "Manav Shah"}
+    - {type: CLAIM_ID, value: "CLM-7460"}
+- id: P059
+  text: "My Aadhaar-style test number is 8391 6250 4718, and PA-518 is the authorization."
+  pii:
+    - {type: AADHAAR_STYLE, value: "8391 6250 4718"}
+    - {type: PA_ID, value: "PA-518"}
+- id: P060
+  text: "I'm Lily Morgan, member M90462, email lily.morgan@example.com."
+  pii:
+    - {type: PERSON, value: "Lily Morgan"}
+    - {type: MEMBER_ID, value: "M90462"}
+    - {type: EMAIL, value: "lily.morgan@example.com"}
+- id: P061
+  text: "Please correct the date of birth to 1988-03-14 for the profile."
+  pii:
+    - {type: DOB, value: "1988-03-14"}
+- id: P062
+  text: "I'm Harish Chandra, and my callback number is +91 98760 12345."
+  pii:
+    - {type: PERSON, value: "Harish Chandra"}
+    - {type: PHONE, value: "+91 98760 12345"}
+- id: P063
+  text: "Could you check claim CLM-5913 for me? My member ID is M17385."
+  pii:
+    - {type: CLAIM_ID, value: "CLM-5913"}
+    - {type: MEMBER_ID, value: "M17385"}
+- id: P064
+  text: "My SSN-style sample is 278-46-1359; please don't use it for a real lookup."
+  pii:
+    - {type: SSN_STYLE, value: "278-46-1359"}
+- id: P065
+  text: "I'm Zoe Bennett, born 11-09-1995, and my email is zoe.bennett@example.com."
+  pii:
+    - {type: PERSON, value: "Zoe Bennett"}
+    - {type: DOB, value: "11-09-1995"}
+    - {type: EMAIL, value: "zoe.bennett@example.com"}
+- id: P066
+  text: "This is Nandini Prasad, member M68291, and PA-804 is still pending."
+  pii:
+    - {type: PERSON, value: "Nandini Prasad"}
+    - {type: MEMBER_ID, value: "M68291"}
+    - {type: PA_ID, value: "PA-804"}
+- id: P067
+  text: "Reach me at +91 90909 12121 about claim CLM-6340."
+  pii:
+    - {type: PHONE, value: "+91 90909 12121"}
+    - {type: CLAIM_ID, value: "CLM-6340"}
+- id: P068
+  text: "I'm Jack Murphy; my member ID is M34716 and my DOB is June 5, 1986."
+  pii:
+    - {type: PERSON, value: "Jack Murphy"}
+    - {type: MEMBER_ID, value: "M34716"}
+    - {type: DOB, value: "June 5, 1986"}
+- id: P069
+  text: "Please send the coverage letter to simran.gill@example.com."
+  pii:
+    - {type: EMAIL, value: "simran.gill@example.com"}
+- id: P070
+  text: "My name is Aditi Sinha, and the phone number on file is (646) 555-0108."
+  pii:
+    - {type: PERSON, value: "Aditi Sinha"}
+    - {type: PHONE, value: "(646) 555-0108"}
+- id: P071
+  text: "The claim is CLM-1186 and the authorization is PA-672."
+  pii:
+    - {type: CLAIM_ID, value: "CLM-1186"}
+    - {type: PA_ID, value: "PA-672"}
+- id: P072
+  text: "I'm Henry Cox, member M75183, email henry.cox@example.com, phone (512) 555-0198."
+  pii:
+    - {type: PERSON, value: "Henry Cox"}
+    - {type: MEMBER_ID, value: "M75183"}
+    - {type: EMAIL, value: "henry.cox@example.com"}
+    - {type: PHONE, value: "(512) 555-0198"}
+- id: P073
+  text: "My Aadhaar-style number is 5067 1942 8630; the profile name is Shreya Kulkarni."
+  pii:
+    - {type: AADHAAR_STYLE, value: "5067 1942 8630"}
+    - {type: PERSON, value: "Shreya Kulkarni"}
+- id: P074
+  text: "I'm Caleb Fisher, and my claim CLM-8602 was denied."
+  pii:
+    - {type: PERSON, value: "Caleb Fisher"}
+    - {type: CLAIM_ID, value: "CLM-8602"}
+- id: P075
+  text: "DOB is 29-12-1990 and member ID is M63825."
+  pii:
+    - {type: DOB, value: "29-12-1990"}
+    - {type: MEMBER_ID, value: "M63825"}
+- id: P076
+  text: "My SSN-style example is 519-83-2467 and my email is marcus.lee@example.com."
+  pii:
+    - {type: SSN_STYLE, value: "519-83-2467"}
+    - {type: EMAIL, value: "marcus.lee@example.com"}
+- id: P077
+  text: "I'm Lakshmi Narayan, and you can call me at +91 88990 11223."
+  pii:
+    - {type: PERSON, value: "Lakshmi Narayan"}
+    - {type: PHONE, value: "+91 88990 11223"}
+- id: P078
+  text: "Please look up PA-196 for member M42057."
+  pii:
+    - {type: PA_ID, value: "PA-196"}
+    - {type: MEMBER_ID, value: "M42057"}
+- id: P079
+  text: "I'm Ella Hughes, DOB March 3 1992, phone (801) 555-0144."
+  pii:
+    - {type: PERSON, value: "Ella Hughes"}
+    - {type: DOB, value: "March 3 1992"}
+    - {type: PHONE, value: "(801) 555-0144"}
+- id: P080
+  text: "The email address is dev.menon@example.com and the claim is CLM-3928."
+  pii:
+    - {type: EMAIL, value: "dev.menon@example.com"}
+    - {type: CLAIM_ID, value: "CLM-3928"}
+- id: P081
+  text: "I'm Pranav Ghosh, member M28164, born 08/23/1987."
+  pii:
+    - {type: PERSON, value: "Pranav Ghosh"}
+    - {type: MEMBER_ID, value: "M28164"}
+    - {type: DOB, value: "08/23/1987"}
+- id: P082
+  text: "My contact number is (408) 555-0177; my name is Audrey Lane."
+  pii:
+    - {type: PHONE, value: "(408) 555-0177"}
+    - {type: PERSON, value: "Audrey Lane"}
+- id: P083
+  text: "Could you send an update about CLM-5274 to amir.khan@example.com?"
+  pii:
+    - {type: CLAIM_ID, value: "CLM-5274"}
+    - {type: EMAIL, value: "amir.khan@example.com"}
+- id: P084
+  text: "I'm Nina Desai and my member number is M91638."
+  pii:
+    - {type: PERSON, value: "Nina Desai"}
+    - {type: MEMBER_ID, value: "M91638"}
+- id: P085
+  text: "The sample Aadhaar-style value on my worksheet is 1738 5904 6217."
+  pii:
+    - {type: AADHAAR_STYLE, value: "1738 5904 6217"}
+- id: P086
+  text: "I'm Owen Bailey; please check authorization PA-359."
+  pii:
+    - {type: PERSON, value: "Owen Bailey"}
+    - {type: PA_ID, value: "PA-359"}
+- id: P087
+  text: "My DOB is 1989.07.16 and my email is rhea.iyer@example.com."
+  pii:
+    - {type: DOB, value: "1989.07.16"}
+    - {type: EMAIL, value: "rhea.iyer@example.com"}
+- id: P088
+  text: "This is Arnav Mukherjee, and claim CLM-6749 is missing from my portal."
+  pii:
+    - {type: PERSON, value: "Arnav Mukherjee"}
+    - {type: CLAIM_ID, value: "CLM-6749"}
+- id: P089
+  text: "Please call Madison Bell at (917) 555-0163 and reference member M50872."
+  pii:
+    - {type: PERSON, value: "Madison Bell"}
+    - {type: PHONE, value: "(917) 555-0163"}
+    - {type: MEMBER_ID, value: "M50872"}
+- id: P090
+  text: "My SSN-style placeholder is 642-19-5830; my name is Emily Ross."
+  pii:
+    - {type: SSN_STYLE, value: "642-19-5830"}
+    - {type: PERSON, value: "Emily Ross"}
+- id: P091
+  text: "Can you tell me whether physical therapy needs prior authorization?"
+  pii:
+    []
+- id: P092
+  text: "What is the difference between a copay and coinsurance?"
+  pii:
+    []
+- id: P093
+  text: "How can I find an in-network primary care doctor?"
+  pii:
+    []
+- id: P094
+  text: "Can you explain what an explanation of benefits means?"
+  pii:
+    []
+- id: P095
+  text: "Where can I see my deductible progress in the member portal?"
+  pii:
+    []
+- id: P096
+  text: "Does an MRI usually require prior authorization?"
+  pii:
+    []
+- id: P097
+  text: "What should I include when I appeal a denied claim?"
+  pii:
+    []
+- id: P098
+  text: "How do I compare in-network and out-of-network costs?"
+  pii:
+    []
+- id: P099
+  text: "Can I speak with a customer service representative?"
+  pii:
+    []
+- id: P100
+  text: "What does it mean if my claim status says pending?"
+  pii:
+    []
